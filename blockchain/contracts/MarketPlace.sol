@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
-contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
-    constructor() ERC1155("") {
+contract Marketplace is ERC1155, Ownable, ERC1155Supply {
+    constructor() payable ERC1155("Marketplace") {
         
     }
 
@@ -37,7 +37,7 @@ contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
     mapping(address => uint) balanceUser;
 
     function CreateItemToSell(uint sellPrice, uint copiesOfItem) public payable {
-        setApprovalForAll(address(this), true);
+    setApprovalForAll(address(this), true);
         currentId++;
         userInventory[msg.sender][currentId] = sellPrice;
         _mint(msg.sender, currentId, copiesOfItem, "");
@@ -48,6 +48,7 @@ contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
        require(msg.value * _amount == userInventory[seller][_id] * _amount, "inssuficient ammount");
 
        safeTransferFrom(seller, msg.sender, currentId, _amount, "");
+       
        balanceUser[seller] += msg.value;
 
     }
