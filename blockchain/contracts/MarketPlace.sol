@@ -17,7 +17,6 @@ contract Marketplace is ERC1155, Ownable, ERC1155Supply {
     event SellerWithdraw(uint amount, address withdrawer);
 
 
-
     //When seller creates item, mint that nft and let him set a price for the item 
     //When buyer buys item, mint nft and add to the balance of the seller the amount set
     //let seller of items withdraw the balance
@@ -48,7 +47,7 @@ contract Marketplace is ERC1155, Ownable, ERC1155Supply {
        require(msg.value * _amount == userInventory[seller][_id] * _amount, "inssuficient ammount");
 
        safeTransferFrom(seller, msg.sender, currentId, _amount, "");
-       
+       ERC1155(address(this)).safeTransferFrom(seller, msg.sender, currentId, _amount, "");
        balanceUser[seller] += msg.value;
 
     }
@@ -59,8 +58,8 @@ contract Marketplace is ERC1155, Ownable, ERC1155Supply {
         require(sent, "Failed to send Ether");
     }
 
-    function withDrawSeller() external payable {
-       require(balanceUser[msg.sender] <= msg.value, "Not enough funds");
+    function withDrawSeller(uint _amount) external payable {
+     
         uint256 _balance = balanceUser[msg.sender];
         uint256 percent = _balance / 100;
 
