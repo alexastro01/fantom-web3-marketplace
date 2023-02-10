@@ -30,14 +30,25 @@ contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
 
     uint public currentId;
 
+
+    // address of user pointing to ID of item pointing to the sale price of ID of item
+    mapping(address => mapping(uint => uint)) userInventory;
+    // balance of user, address points to value
+    mapping(address => uint) balanceUser;
+
     function CreateItemToSell(uint sellPrice, uint copiesOfItem) public payable {
-        
+        setApprovalForAll(address(this), true);
         currentId++;
+        userInventory[msg.sender][currentId] = sellPrice;
         _mint(msg.sender, currentId, copiesOfItem, "");
+        emit ItemCreated(currentId, msg.sender);
     }
 
-    function BuyItem(uint _id) public payable {
+    function BuyItem(uint _id, address seller, uint _amount) public payable {
+       require(msg.value * _amount == userInventory[seller][_id] * _amount, "inssuficient ammount");
 
+       safeTransferFrom(seller, msg.sender, currentId, _amount, "");
+       balanceUser[seller] += msg.value;
     }
 
     function withDrawMarketplace() external onlyOwner {
@@ -47,6 +58,8 @@ contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
     function withDrawSeller() external {
 
     }
+
+
 
 
         function setURI(string memory newuri) public onlyOwner {
