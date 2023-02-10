@@ -7,18 +7,50 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
     constructor() ERC1155("") {
+        
+    }
+
+
+    
+    event ItemCreated(uint _id, address seller);
+    event ItemSold(uint _id, address buyer);
+    event SellerWithdraw(uint amount, address withdrawer);
+
+
+
+    //When seller creates item, mint that nft and let him set a price for the item 
+    //When buyer buys item, mint nft and add to the balance of the seller the amount set
+    //let seller of items withdraw the balance
+    //Let owner of the marketplace withdraw the balance
+    //keep track of ids, every seller that creates an item will get a new id(incrementally)
+
+    //more complicated, will see for later
+    //When buyer creates item , let him upload an image with the item (get hash from frontend)
+
+
+    uint public currentId;
+
+    function CreateItemToSell(uint sellPrice, uint copiesOfItem) public payable {
+        
+        currentId++;
+        _mint(msg.sender, currentId, copiesOfItem, "");
+    }
+
+    function BuyItem(uint _id) public payable {
+
+    }
+
+    function withDrawMarketplace() external onlyOwner {
+
+    }
+
+    function withDrawSeller() external {
+
     }
 
 
         function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
-    }
-
-    function mint(address account, uint256 id, uint256 amount, bytes memory data)
-        public
-        onlyOwner
-    {
-        _mint(account, id, amount, data);
     }
 
     function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
