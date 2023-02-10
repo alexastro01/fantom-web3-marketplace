@@ -10,7 +10,7 @@ contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
         
     }
 
-
+    address public constant MarketplaceVaultAddress = 0x909957dcc1B114Fe262F4779e6aeD4d034D96B0f;
     
     event ItemCreated(uint _id, address seller);
     event ItemSold(uint _id, address buyer);
@@ -49,14 +49,22 @@ contract MyCollectible is ERC1155, Ownable, ERC1155Supply {
 
        safeTransferFrom(seller, msg.sender, currentId, _amount, "");
        balanceUser[seller] += msg.value;
+
     }
 
     function withDrawMarketplace() external onlyOwner {
-
+         uint256 _balance = address(this).balance;
+        (bool sent, bytes memory data) = MarketplaceVaultAddress.call{value: _balance}("");
+        require(sent, "Failed to send Ether");
     }
 
-    function withDrawSeller() external {
+    function withDrawSeller() external payable {
+       require(balanceUser[msg.sender] <= msg.value, "Not enough funds");
+        uint256 _balance = balanceUser[msg.sender];
+        uint256 percent = _balance / 100;
 
+        (bool sent, bytes memory data) = msg.sender.call{value: percent * 95}("");
+        require(sent, "Failed to send Ether");
     }
 
 
