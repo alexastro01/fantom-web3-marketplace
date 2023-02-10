@@ -46,10 +46,11 @@ contract Marketplace is ERC1155, Ownable, ERC1155Supply {
     function BuyItem(uint _id, address seller, uint _amount) public payable {
        require(msg.value * _amount == userInventory[seller][_id] * _amount, "inssuficient ammount");
 
-   
+    
+       
        ERC1155(address(this)).safeTransferFrom(seller, msg.sender, _id, _amount, "");
        balanceUser[seller] += msg.value;
-
+       emit ItemSold(_id, msg.sender);
     }
 
     function withDrawMarketplace() external onlyOwner {
