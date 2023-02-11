@@ -29,6 +29,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     //1. Image upload logic , with ipfs ( when mint upload image , or second step ? I think second step)
     //2. Shipment status returns string
     //3. think about events
+    //4. read more state to string to read in the front end
 
 
     uint public currentId;
