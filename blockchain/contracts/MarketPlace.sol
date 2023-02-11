@@ -35,7 +35,7 @@ contract Marketplace is ERC721, Ownable {
     // balance of user, address points to value
     mapping(address => uint) balanceUser;
 
-    function CreateItemToSell(uint sellPrice, uint copiesOfItem) public payable {
+    function CreateItemToSell(uint sellPrice) public payable {
         setApprovalForAll(address(this), true);
         currentId++;
         userInventory[msg.sender][currentId] = sellPrice;
@@ -45,9 +45,6 @@ contract Marketplace is ERC721, Ownable {
 
     function BuyItem(uint _id, address seller, uint _amount) public payable {
        require(msg.value * _amount == userInventory[seller][_id] * _amount, "inssuficient ammount");
-
-    
-       
        ERC721(address(this)).safeTransferFrom(seller, msg.sender, _id);
        balanceUser[seller] += msg.value;
        emit ItemSold(_id, msg.sender);
@@ -68,6 +65,16 @@ contract Marketplace is ERC721, Ownable {
         require(sent, "Failed to send Ether");
     }
 
+
+    function getSalePrice(address seller, uint _id) external view returns(uint) {
+         uint salePrice = userInventory[seller][_id];
+         return salePrice;
+    }
+
+    function getUserBalance(address user) external view returns(uint) {
+        uint userBalance = balanceUser[user];
+        return userBalance;
+    }
 
 
 
