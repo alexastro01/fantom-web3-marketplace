@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
+
 contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     constructor() payable ERC721("Marketplace", "MK") {
         
@@ -12,10 +13,10 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
 
     address public constant MarketplaceVaultAddress = 0x909957dcc1B114Fe262F4779e6aeD4d034D96B0f;
     
-    event ItemCreated(uint _id, address seller);
-    event ItemSold(uint _id, address buyer);
-    event SellerWithdraw(uint amount, address withdrawer);
-    event OrderStatusUpdated(ShippingStatus ShippingStatus, uint id, address seller, address buyer);
+    event ItemCreated(uint indexed _id, address indexed seller);
+    event ItemSold(uint indexed _id, address indexed buyer, uint indexed amount);
+    event SellerWithdraw(uint indexed amount, address indexed withdrawer);
+    event OrderStatusUpdated(ShippingStatus ShippingStatus, uint indexed id, address indexed seller, address indexed buyer);
 
 
 
@@ -62,7 +63,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
        balanceUser[seller] += msg.value;
        buyerOfId[_id] = msg.sender;
        SoldStatus[_id] = true;
-       emit ItemSold(_id, msg.sender);
+       emit ItemSold(_id, msg.sender, msg.value);
     }
 
     function withDrawMarketplace() external onlyOwner {
@@ -75,7 +76,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         require(balanceUser[msg.sender] > 0, "Required to have funds");
         uint256 _balance = balanceUser[msg.sender];
         uint256 percent = _balance / 100;
-
+        balanceUser[msg.sender] = 0;
         (bool sent, bytes memory data) = msg.sender.call{value: percent * 95}("");
         require(sent, "Failed to send Ether");
     }
