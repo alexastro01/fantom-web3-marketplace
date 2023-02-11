@@ -42,7 +42,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
        Shipped
    }
 
-    function CreateItemToSell(uint sellPrice) public payable {
+    function CreateItemToSell(uint sellPrice, string memory tokenUri) public payable {
         require(sellPrice != 0, "Price can't be 0");
         setApprovalForAll(address(this), true);
         currentId++;
@@ -50,6 +50,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         _mint(msg.sender, currentId);
         sellers.push(msg.sender);
         SoldStatus[currentId] = false;
+        _setTokenURI(currentId, tokenUri);
         emit ItemCreated(currentId, msg.sender);
     }
 
@@ -71,7 +72,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     }
 
     function withDrawSeller() external payable {
-     
+        require(balanceUser[msg.sender] > 0, "Required to have funds");
         uint256 _balance = balanceUser[msg.sender];
         uint256 percent = _balance / 100;
 
@@ -116,6 +117,14 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         orderStatus[_id] = ShippingStatus.Shipped;
         emit OrderStatusUpdated(ShippingStatus.Shipped, _id, msg.sender, buyerOfId[_id]);
     }
+
+
+
+
+    /**
+     * @dev See {IERC721Metadata-tokenURI}.
+     */
+  
  
         function tokenURI(uint256 tokenId)
         public

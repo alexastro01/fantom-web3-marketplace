@@ -17,7 +17,7 @@ describe("Item Creation Marketplace", function () {
      marketplace = await ethers.getContractFactory("Marketplace");
      Marketplace = await marketplace.deploy();
      price = 100;
-    const itemCreation = await Marketplace.connect(creator).CreateItemToSell(price);
+    const itemCreation = await Marketplace.connect(creator).CreateItemToSell(price , "");
    })
 
      it("Item creation updates current Id", async function() {
@@ -73,15 +73,18 @@ describe("Buying Item on Marketplace", function () {
   let Marketplace;
   let creator;
   let buyer;
+  let anotherPerson;
   let price;
   beforeEach(async function () {
-    creator = await ethers.getSigner();
+    // creator = await ethers.getSigner();
   
-    buyer = await ethers.getSigner();
+    // buyer = await ethers.getSigner();
+    // anotherPerson = await ethers.getSigner();
+    [creator, buyer, anotherPerson] = await ethers.getSigners();
      marketplace = await ethers.getContractFactory("Marketplace");
      Marketplace = await marketplace.deploy();
      price = 100;
-    const itemCreation = await Marketplace.connect(creator).CreateItemToSell(price);
+    const itemCreation = await Marketplace.connect(creator).CreateItemToSell(price, "");
     const itemBought = await Marketplace.connect(buyer).BuyItem(1, creator.address, { value: price })
    
    })
@@ -92,12 +95,48 @@ describe("Buying Item on Marketplace", function () {
        const balanceOfBuyerNumber = balanceOfbuyer.toNumber();
        assert(balanceOfBuyerNumber === 1);
      
+     });
+
+
+    it("Should update order status", async function() {
+       const orderStatus = await Marketplace.orderStatus(1)
+     
+       assert(orderStatus === 1);
+    })
+     
+    it("Should update balance of seller" , async function() {
+      const balanceOfSeller = await Marketplace.balanceUser(creator.address);
+      const balanceSellerNumber = balanceOfSeller.toNumber();
+      assert(balanceSellerNumber === 100);
+    })
+
+    it("Should update buyer of id", async function() {
+      const buyerOfId = await Marketplace.buyerOfId(1)
+      assert(buyerOfId === buyer.address);
+   })
+
+
+     it("only owner can withdrawMarketplace", async function() {
+     
+      
+     await expect(Marketplace.connect(anotherPerson).withDrawMarketplace()).to.be.revertedWith('Ownable: caller is not the owner')
      })
 
+     it("only seller can withdraw his amount", async function() {
      
+      
+      await expect(Marketplace.connect(anotherPerson).withDrawSeller()).to.be.revertedWith('Required to have funds');
+      })
+    
+      it("seller can withdraw his amount", async function() {
+       const withdrawl = await Marketplace.connect(creator).withDrawSeller()
+      assert(withdrawl)
+      })
 
+      it("only seller can update his shippment status", async function() {
+       await expect(Marketplace.connect(anotherPerson).updateShipmentStatus(1)).to.be.revertedWith("user doesn't own the item")
 
-     
+      })
 });
 
 
