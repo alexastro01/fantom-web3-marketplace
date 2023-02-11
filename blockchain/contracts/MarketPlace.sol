@@ -13,7 +13,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
 
     address public constant MarketplaceVaultAddress = 0x909957dcc1B114Fe262F4779e6aeD4d034D96B0f;
     
-    event ItemCreated(uint indexed _id, address indexed seller);
+    event ItemCreated(uint indexed _id, address indexed seller, uint indexed price);
     event ItemSold(uint indexed _id, address indexed buyer, uint indexed amount);
     event SellerWithdraw(uint indexed amount, address indexed withdrawer);
     event OrderStatusUpdated(ShippingStatus ShippingStatus, uint indexed id, address indexed seller, address indexed buyer);
@@ -52,7 +52,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         sellers.push(msg.sender);
         SoldStatus[currentId] = false;
         _setTokenURI(currentId, tokenUri);
-        emit ItemCreated(currentId, msg.sender);
+        emit ItemCreated(currentId, msg.sender, sellPrice);
     }
 
     function BuyItem(uint _id, address seller) public payable {
