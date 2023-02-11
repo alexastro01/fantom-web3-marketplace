@@ -21,16 +21,23 @@ describe("Item Creation Marketplace", function () {
    })
 
      it("Item creation updates current Id", async function() {
-    
-      expect(Marketplace.currentId === 1);
+      const currentId = await Marketplace.currentId();
+     const currentIdNumber = currentId.toNumber()
+      assert(currentIdNumber === 1);
      })
 
      it("Item creation sets approval for contract to move NFTs", async function() {
-      expect(Marketplace.isApprovedForAll(creator, Marketplace))
+      const isApprovedForAll = await Marketplace.isApprovedForAll(creator.address, Marketplace.address)
+      assert(isApprovedForAll === true);
      })
 
      it("Should update creator inventory", async function() {
-      expect(Marketplace.userInventory(creator, Marketplace.currentId) === price );
+     const currentId = await Marketplace.currentId();
+     const currentIdNumber = currentId.toNumber()
+     const userInventory = await Marketplace.userInventory(creator.address, currentIdNumber)
+     const userInventoryNumber = userInventory.toNumber();
+       
+      assert(userInventoryNumber === price );
      })
   
      it("Should update creator balance", async function() {
