@@ -4,8 +4,9 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract Marketplace is ERC721, Ownable {
+contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     constructor() payable ERC721("Marketplace", "MK") {
         
     }
@@ -23,8 +24,11 @@ contract Marketplace is ERC721, Ownable {
     //Let owner of the marketplace withdraw the balance
     //keep track of ids, every seller that creates an item will get a new id(incrementally)
 
-    //more complicated, will see for later
-    //When buyer creates item , let him upload an image with the item (get hash from frontend)
+
+    //todo 
+    //1. Image upload logic , with ipfs ( when mint upload image , or second step ? I think second step)
+    //2. Shipment status returns string
+    //3. think about events
 
 
     uint public currentId;
@@ -35,6 +39,13 @@ contract Marketplace is ERC721, Ownable {
     // balance of user, address points to value
     mapping(address => uint) balanceUser;
     address[] public sellers;
+
+   enum ShippingStatus {
+       OrderReceived,
+       ShippingInProgress,
+       Shipped
+   }
+
     function CreateItemToSell(uint sellPrice) public payable {
         setApprovalForAll(address(this), true);
         currentId++;
@@ -87,10 +98,17 @@ contract Marketplace is ERC721, Ownable {
           }
     }
 
+        function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
 
-
-
-
-
+     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
 
 }
