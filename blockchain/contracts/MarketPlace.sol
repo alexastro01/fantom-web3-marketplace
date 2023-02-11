@@ -30,6 +30,8 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     mapping(address => uint) balanceUser;
     // id points to buyer;
     mapping(uint => address) buyerOfId;
+    // id points to sold status;
+    mapping(uint => bool) SoldStatus;
 
     address[] public sellers;
 
@@ -47,6 +49,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         userInventory[msg.sender][currentId] = sellPrice;
         _mint(msg.sender, currentId);
         sellers.push(msg.sender);
+        SoldStatus[currentId] = false;
         emit ItemCreated(currentId, msg.sender);
     }
 
@@ -56,6 +59,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
        orderStatus[_id] = ShippingStatus.OrderReceived;
        balanceUser[seller] += msg.value;
        buyerOfId[_id] = msg.sender;
+       SoldStatus[_id] = true;
        emit ItemSold(_id, msg.sender);
     }
 

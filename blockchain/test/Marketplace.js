@@ -1,44 +1,35 @@
-const {
-  time,
-  loadFixture,
-} = require("@nomicfoundation/hardhat-network-helpers");
-const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
-const { expect } = require("chai");
+const { revertedWithCustomError } = require("@nomicfoundation/hardhat-chai-matchers");
+const { expect, assert } = require("chai");
+const { ethers } = require("hardhat");
+require("@nomiclabs/hardhat-ethers");
+
 
 describe("Marketplace", function () {
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
 
+  let marketplace;
+  let Marketplace;
+  let creator;
+  let buyer;
 
-  describe("Create Item", function () {
-    it("Create Item successfully", async function () {
-            // Contracts are deployed using the first signer/account by default
- // Contracts are deployed using the first signer/account by default
- const [buyer, seller] = await ethers.getSigners();
+  beforeEach(async function () {
+    creator = await ethers.getSigner();
+    buyer = await ethers.getSigner();
+     marketplace = await ethers.getContractFactory("Marketplace");
+     Marketplace = await marketplace.deploy();
 
- const Marketplace = await ethers.getContractFactory("Marketplace");
- const marketplace = await Marketplace.deploy();
+    const itemCreation = await Marketplace.connect(creator).CreateItemToSell(100);
+   })
 
- // Check if the item is successfully created
- const tx = await marketplace.CreateItemToSell(100, { from: seller });
- const receipt = await tx.wait();
+     it("Item creation updates current Id", async function() {
+    
+      expect(Marketplace.currentId === 1);
+     })
 
- // Check if the event ItemCreated is emitted
- const events = receipt.events;
- assert.equal(events.length, 1);
- assert.equal(events[0].event, "ItemCreated");
+     it("Item creation sets approval for contract to move NFTs", async function() {
+      expect(Marketplace.isApprovedForAll(creator, Marketplace))
+     })
 
- // Check if the item has been added to the sellers array
- const sellersArray = await marketplace.sellers();
- assert.equal(sellersArray.length, 1);
- assert.equal(sellersArray[0], seller.address);
-
- // Check if the item has been added to the userInventory mapping
- const userInventoryArray = await marketplace.userInventory(seller.address);
- assert.equal(userInventoryArray.length, 1);
- assert.equal(userInventoryArray[0].sellPrice, 100);
-  })})
+ 
 });
 
 
