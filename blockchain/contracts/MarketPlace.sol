@@ -65,7 +65,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         require(sent, "Failed to send Ether");
     }
 
-    function withDrawSeller(uint _amount) external payable {
+    function withDrawSeller() external payable {
      
         uint256 _balance = balanceUser[msg.sender];
         uint256 percent = _balance / 100;
