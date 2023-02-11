@@ -34,12 +34,13 @@ contract Marketplace is ERC721, Ownable {
     mapping(address => mapping(uint => uint)) userInventory;
     // balance of user, address points to value
     mapping(address => uint) balanceUser;
-
+    address[] public sellers;
     function CreateItemToSell(uint sellPrice) public payable {
         setApprovalForAll(address(this), true);
         currentId++;
         userInventory[msg.sender][currentId] = sellPrice;
         _mint(msg.sender, currentId);
+        sellers.push(msg.sender);
         emit ItemCreated(currentId, msg.sender);
     }
 
@@ -74,6 +75,16 @@ contract Marketplace is ERC721, Ownable {
     function getUserBalance(address user) external view returns(uint) {
         uint userBalance = balanceUser[user];
         return userBalance;
+    }
+
+    function forIdGetSellerAndPrice(uint _id) external view returns (address, uint) {
+          uint sellerArrayLen = sellers.length;
+          for(uint i = 0; i <= sellerArrayLen; i++) {
+            uint price = userInventory[sellers[i]][_id];
+               if(price > 0 ) {
+                return (sellers[i], price);
+               } 
+          }
     }
 
 
