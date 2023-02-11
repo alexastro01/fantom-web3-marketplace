@@ -30,7 +30,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     //2. Shipment status returns string
     //3. think about events
     //4. read more state to string to read in the front end
-
+    //5. bought item state for buyer, he will be able to view the items that he bought and shippment status in his page , custom route with address
 
     uint public currentId;
 
