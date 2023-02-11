@@ -55,6 +55,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
 
     function BuyItem(uint _id, address seller) public payable {
        require(msg.value  == userInventory[seller][_id], "inssuficient ammount");
+       require(ownerOf(_id) == seller, "seller is not owner of Id" );
        ERC721(address(this)).safeTransferFrom(seller, msg.sender, _id);
        orderStatus[_id] = ShippingStatus.OrderReceived;
        balanceUser[seller] += msg.value;
