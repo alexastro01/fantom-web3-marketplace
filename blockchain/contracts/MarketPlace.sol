@@ -23,15 +23,15 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
 
 
     // address of user pointing to ID of item pointing to the sale price of ID of item
-    mapping(address => mapping(uint => uint)) userInventory;
+    mapping(address => mapping(uint => uint)) public userInventory;
     //uint (ID) points to shipping status
-    mapping(uint => ShippingStatus) orderStatus;
+    mapping(uint => ShippingStatus) public orderStatus;
     // balance of user, address points to value
-    mapping(address => uint) balanceUser;
+    mapping(address => uint) public balanceUser;
     // id points to buyer;
-    mapping(uint => address) buyerOfId;
+    mapping(uint => address) public buyerOfId;
     // id points to sold status;
-    mapping(uint => bool) SoldStatus;
+    mapping(uint => bool) public SoldStatus;
 
     address[] public sellers;
 
