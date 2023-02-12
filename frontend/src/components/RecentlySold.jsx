@@ -28,7 +28,7 @@ const RecentlySold = () => {
       }
     
       useEffect(() => {
-        callForRecentlySold();
+    
       }, [])
 
   return (

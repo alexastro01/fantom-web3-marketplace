@@ -27,7 +27,7 @@ const RecentlyCreated = () => {
   }
 
   useEffect(() => {
-    callForRecentlyCreated();
+   
   }, [])
 
 
