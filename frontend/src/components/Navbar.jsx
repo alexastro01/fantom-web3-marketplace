@@ -1,6 +1,26 @@
 import React from 'react'
-
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAccount } from 'wagmi'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { useContext } from "react";
+import { userAddressContext } from '@/helper/userAddressContext'
 const Navbar = () => {
+
+
+  const { userAddress, setUserAddress } = useContext(userAddressContext);
+
+  const {address} = useAccount();
+
+  useEffect(() => {
+    
+    console.log(address)
+    setUserAddress(address);
+  },[userAddress])
+
+   
+
+
   return (
     
 <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
@@ -20,8 +40,11 @@ const Navbar = () => {
         </li>
 
         <li>
-          <button href="#" class="block py-2 pl-3 pr-4 bg-blue-600 text-gray-200 rounded hover:bg-blue-800 md:border-0 text-xl ">Connect Wallet</button>
+         <ConnectButton />
         </li>
+         <li>
+          
+         </li>
       </ul>
     </div>
   </div>
