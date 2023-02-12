@@ -6,12 +6,18 @@ import { userAddressContext } from '@/helper/userAddressContext';
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import { useIsMounted } from '@/hooks/useIsMounted';
+
+
+
+
 
 export default function Profile() {
 
     const {userAddress, setUserAddress} = useContext(userAddressContext);
     const [userAddressState, setUserAddressState] = useState('');
-
+    
+    const mounted = useIsMounted(); 
     const { address } = useAccount();
 
     const [userOwnRoute, setUserOwnRoute] = useState();
@@ -26,7 +32,7 @@ export default function Profile() {
 
     useEffect(() => {
         setUserAddressState(address);
-        if (address === walletAddress) {
+        if (address  === walletAddress) {
             setUserOwnRoute(true);
           } else if (address !== walletAddress) {
             setUserOwnRoute(false);
@@ -43,9 +49,16 @@ export default function Profile() {
   return (
     <div>
         <Navbar/>
-        <div>{address}</div>
-        <div>{userOwnRoute ? <div>ADDRESS OWNS THIS ROUTE</div> :<div>ADDRESS DOESN'T OWN THIS ROUTE</div> }</div>
-        <div>{invalidAddress ? <div className='text-red-400'>ADDRESS NOT VALID</div> : <div></div>}</div>
+        <div>{mounted ? address : null}</div>
+        <div>{mounted ? userOwnRoute ? <div>ADDRESS OWNS THIS ROUTE</div> :<div>ADDRESS DOESN'T OWN THIS ROUTE</div> : null }</div>
+        <div>{mounted ? invalidAddress ? <div className='text-red-400'>ADDRESS NOT VALID</div> : <div></div> : null}</div>
+
+        <div className='mx-12'>
+             <div>
+                { mounted ? userOwnRoute ? <p className='text-4xl'>Your listed items</p> : <p className='text-4xl'>Listed Items</p> : null}
+                 
+             </div>
+        </div>
     </div>
   )
 

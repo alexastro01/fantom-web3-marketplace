@@ -6,11 +6,12 @@ import { useEffect } from 'react'
 import { useContext } from "react";
 import { userAddressContext } from '@/helper/userAddressContext'
 import Link from 'next/link'
+import { useIsMounted } from '@/hooks/useIsMounted'
 const Navbar = () => {
 
 
   const { userAddress, setUserAddress } = useContext(userAddressContext);
-
+  const mounted = useIsMounted();
   const {address} = useAccount();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Navbar = () => {
          <ConnectButton />
         </li>
         <li>
-          {address &&  <Link href={`/profile/${address}`} class="block   rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform " aria-current="page">My Profile</Link> }
+          {mounted ? address &&  <Link href={`/profile/${address}`} class="block   rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform " aria-current="page">My Profile</Link> : null }
         </li>
 
       
