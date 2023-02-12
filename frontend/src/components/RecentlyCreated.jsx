@@ -4,9 +4,6 @@ import axios from 'axios'
 
 const RecentlyCreated = () => {
 
-
-
-
   async function callForRecentlyCreated(){
     const headers = {
       'accept': 'application/json',
@@ -39,16 +36,16 @@ const RecentlyCreated = () => {
     <div>
         <div className='grid grid-cols-4 justify-items-center '>
              <div className=''>
-test
+             recentlyCreated
              </div>
              <div>
-             test
+             recentlyCreated
              </div>
              <div>
-             test
+             recentlyCreated
              </div>
              <div>
-             test
+             recentlyCreated
              </div>
         </div>
         <div>
