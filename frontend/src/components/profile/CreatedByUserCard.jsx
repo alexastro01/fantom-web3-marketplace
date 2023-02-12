@@ -61,7 +61,7 @@ let initialArr = [];
     
       useEffect(() => {
         callForRecentlyCreated();
-        setEventsData(userEvents)
+       
        
       }, [])
 
