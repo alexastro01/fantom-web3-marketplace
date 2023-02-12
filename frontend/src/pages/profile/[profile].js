@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useIsMounted } from '@/hooks/useIsMounted';
-
+import CreatedByUserCard from '@/components/profile/CreatedByUserCard';
 
 
 
@@ -43,7 +43,11 @@ export default function Profile() {
             setInvalidAddress(false);
           }
       
-    },[userAddress, router.asPath, address])
+    },[userAddress, router.asPath, address]);
+
+
+
+
 
 
   return (
@@ -56,7 +60,7 @@ export default function Profile() {
         <div className='mx-12'>
              <div>
                 { mounted ? userOwnRoute ? <p className='text-4xl'>Your listed items</p> : <p className='text-4xl'>Listed Items</p> : null}
-                 
+                 <CreatedByUserCard userWallet={address} />
              </div>
         </div>
     </div>
