@@ -6,6 +6,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import { useState } from 'react'
 import { FaCloudUploadAlt } from "react-icons/fa"
+import CreateNft from '@/components/CreateNft'
 
 const Create = () => {
 
@@ -14,6 +15,7 @@ const Create = () => {
         const [loadingUploadImage, setUploadLoadingImage] = useState(null);
         const [imageHash, setImageHash] = useState();
         const [loadingJson, setLoadingJson] = useState(null);
+        const [jsonRes, setJsonRes] = useState([]);
         const [formData, setFormData] = useState({
           title: "",
           description: "",
@@ -88,9 +90,12 @@ const Create = () => {
 
 
           const res = await axios(config);
-          console.log(res.data);
-         
+          console.log(res.data.IpfsHash);
+      
+          jsonRes.push(`https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}`)
           setStep(3);
+         
+          console.log(jsonRes)
         }
         
 
@@ -213,7 +218,8 @@ const Create = () => {
               <p className="flex justify-center font-semibold">{formData.description}</p>
               <p className="flex justify-center font-semibold text-xl">{formData.price} FTM</p>
               <div className='flex justify-center'>
-              <button type="sumbit" className="rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform"  onClick={createNFT} >CREATE & LIST</button>
+              {/* <button type="sumbit" className="rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform"  onClick={createNFT} >CREATE & LIST</button> */}
+              <CreateNft sellPrice={formData.price} tokenuri={jsonRes[0]} />
               </div>
               </div>
                     
