@@ -27,6 +27,9 @@ const CreateNft = (props) => {
     const { isLoading, isSuccess } = useWaitForTransaction({
       hash: data?.hash,
     })
+
+
+    
   return (
 
     <div>

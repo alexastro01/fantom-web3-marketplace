@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import { ethers } from "ethers";
 import fantomABI from '../../helper/Marketplace.json'
 import axios from "axios";
-
+import Image from "next/image";
 
 export default function Item() { 
   
@@ -15,6 +15,8 @@ export default function Item() {
     const {userAddress, setUserAddress} = useContext(userAddressContext);
     const [tokenRouteState, setTokenRouteState] = useState('');
     const [metadataLinkState, setMetadataLinkState] = useState();
+    const [arrayState, setArrayState] = useState([]);
+    const [loading, setIsLoading] = useState(true);
 
     const router = useRouter();
     const pathArray = router.asPath.split('/');
@@ -51,6 +53,11 @@ export default function Item() {
             console.log(metadataLinkState)
         const metadata = await axios.get(metadataLinkState, config);
         console.log(metadata);
+        
+        metadata.data.forEach(element => arrayState.push(element))
+
+        console.log(arrayState);
+        setIsLoading(false);
         } catch(e) {
             console.log(e);
         }
@@ -62,11 +69,30 @@ export default function Item() {
       console.log(tokenIdRoute);
       setTokenRouteState(tokenIdRoute)
       MetadataCall();
-    },[router, tokenIdRoute, metadataLinkState])
+    },[router, tokenIdRoute, metadataLinkState, arrayState])
 
      return (
         <div>
            <Navbar />
+ {loading === false  ?   <div className="grid grid-cols-2 justify-items-center mt-20">
+
+<div>
+    <Image src={arrayState[1].image} width={500} height={500} /> 
+</div>
+<div>
+    <p className="text-5xl">
+     Title: {arrayState[0].title}
+    </p>
+    <p className="text-5xl">
+      Description:  {arrayState[2].description}
+    </p>
+    <p className="text-5xl">
+      Price:  {arrayState[3].price}
+    </p>
+</div>
+
+</div> : <div>Loading...</div>} 
+  
         </div>
      )
 }
