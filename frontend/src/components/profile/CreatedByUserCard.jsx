@@ -2,27 +2,31 @@ import React from 'react'
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import { useIsMounted } from '@/hooks/useIsMounted';
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 
 const CreatedByUserCard = (props) => {
 
 
      const [eventsData, setEventsData] = useState([]);
-   
+     const [stateOfArray, setstateOfArray] = useState(false);
+      
     
 let initialArr = [];
 
 
-
     function filterData(arg) {
-        console.log(arg)
-        if(initialArr.length > 0 ) {
+        console.log(arg + " " + "this is props")
+      
             for(let i = 0; i < initialArr.length; i++) {
                 if(arg.toLowerCase() == initialArr[i].seller.toLowerCase()) {
                     eventsData.push(initialArr[i]);
                 console.log("this is user events")
-                console.log(eventsData)
-                } 
-            }
+                setstateOfArray(true)
+                } else {
+                  console.log('fail')
+                }
+    
     
         }
        
@@ -48,8 +52,8 @@ let initialArr = [];
             initialArr.push(response.data.result[i].data);
             console.log(initialArr)
             }
-            filterData(props.userWallet)
             
+            filterData(props.routeWallet)
         
         })
         .catch(error => {
@@ -60,28 +64,24 @@ let initialArr = [];
   
     
       useEffect(() => {
+      setTimeout(() => {
         callForRecentlyCreated();
+        console.log(props.routeWallet + " " + "this is in useEffect")
+     
+      }, 500)  
        
-       
-      }, [])
+      }, [props.routeWallet, eventsData, props])
 
         
       return (
         <div>
-            <div className='grid grid-cols-4 justify-items-center '>
-                 <div className=''>
-                 recentlyCreated
-                 </div>
-                 <div>
-                 recentlyCreated
-                 </div>
-                 <div>
-                 recentlyCreated
-                 </div>
-                 <div>
-                 recentlyCreated
-                 </div>
-            </div>
+          {stateOfArray ? eventsData.map(event => (
+          <div>
+            <p>{event.seller}</p>
+            <p>{event._id}</p>
+         </div>
+        )) : <div>null</div>}
+          
             <div>
          
             </div>

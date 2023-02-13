@@ -16,7 +16,7 @@ export default function Profile() {
 
     const {userAddress, setUserAddress} = useContext(userAddressContext);
     const [userAddressState, setUserAddressState] = useState('');
-    
+    const [routeStateAddress, setRouteStateAddress] = useState();
     const mounted = useIsMounted(); 
     const { address } = useAccount();
 
@@ -27,7 +27,7 @@ export default function Profile() {
     const walletAddress = pathArray[2];
 
     console.log(pathArray);
-    console.log(address);
+    console.log(walletAddress);
 
 
     useEffect(() => {
@@ -42,8 +42,10 @@ export default function Profile() {
           } else {
             setInvalidAddress(false);
           }
+          setRouteStateAddress(walletAddress)  
+          console.log(walletAddress + " this is in parent useEffect")
       
-    },[userAddress, router.asPath, address]);
+    },[userAddress, walletAddress, address]);
 
 
 
@@ -60,7 +62,7 @@ export default function Profile() {
         <div className='mx-12'>
              <div>
                 { mounted ? userOwnRoute ? <p className='text-4xl'>Your listed items</p> : <p className='text-4xl'>Listed Items</p> : null}
-                 <CreatedByUserCard userWallet={address} />
+                 {mounted ? <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} /> : null }
              </div>
         </div>
     </div>
