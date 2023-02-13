@@ -41,12 +41,14 @@ const Navbar = () => {
          <ConnectButton />
         </li>
         <li>
+          
           {mounted ? address &&  <Link href={`/profile/${address}`} class="block   rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform " aria-current="page">My Profile</Link> : null }
+          
         </li>
 
       
          <li>
-          
+         {mounted ? address &&  <Link href={`/create`} class="block   rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform " aria-current="page">Create</Link> : null }
          </li>
       </ul>
     </div>
