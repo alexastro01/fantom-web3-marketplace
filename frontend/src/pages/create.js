@@ -5,6 +5,7 @@ import { useContext } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import { useState } from 'react'
+import { FaCloudUploadAlt } from "react-icons/fa"
 
 const Create = () => {
 
@@ -54,6 +55,7 @@ const Create = () => {
         }
 
         const sendJsonToIPFS = async () => {
+          setLoadingJson(true);
          let data = JSON.stringify({
             "pinataOptions": {
               "cidVersion": 1
@@ -87,7 +89,7 @@ const Create = () => {
 
           const res = await axios(config);
           console.log(res.data);
-          setLoadingJson(true);
+         
           setStep(3);
         }
         
@@ -118,15 +120,27 @@ const Create = () => {
         <Navbar />
 
     
-    <div className='mx-12'>
+    <div className='mx-12' style={{
+        userSelect: 'none',
+    }}>
         {step === 1 && 
         <div className='grid grid-cols-1 justify-items-center'>
              <p className='text-7xl mt-12'>Sell an item</p>
              <p className='text-5xl mt-8'>Step 1 : Upload an image</p>
-             <div className='bg-blue-600 mt-12 '>
+             <div className=' mt-12 '>
              <form onSubmit={sendImageToIPFS} className="grid grid-cols-1 justify-items-center w-full">
-            <input className=' text-4xl' type="file" onChange={(e) =>setFileImg(e.target.files[0])} required />
-            <button className='w-24 h-24' type='submit' >Upload Image</button> 
+              <label className='w-80 h-40  rounded-2xl shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform' >
+                <div className=''>
+                {fileImg ?  <p className='flex justify-center mt-8 text-4xl'>{fileImg.name}</p> : 
+                <div className='grid items-center justify-items-center mt-8 cursor-pointer '>
+                <p className=''>Upload an image</p> 
+                <FaCloudUploadAlt size={80} className="flex justify-center" /> 
+                </div>
+                }
+                </div>
+            <input className=' text-4xl ' type="file" onChange={(e) =>setFileImg(e.target.files[0])} required />
+            </label>
+           {fileImg && <button className=' mt-8 rounded-2xl shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform' >Confirm</button> }
             {loadingUploadImage && <p>Loading</p>}             
            </form> 
                     
@@ -177,9 +191,9 @@ const Create = () => {
     
       <br />
       <br />
-      <div className='flex justify-center'>
+      <div className='grid justify-items-center'>
       <button type="sumbit" className="rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform "  onClick={sendJsonToIPFS} >SUBMIT FORM</button>
-      {loadingJson && <p>Loading</p>}
+      {loadingJson && <p className='flex justify-center'>Loading</p>}
 
       </div>
     </form>
@@ -193,8 +207,8 @@ const Create = () => {
              <p className='text-7xl mt-12'>Sell an item</p>
              <p className='text-5xl mt-8'>Step 3 : Confirm 🎉</p>
              <div className=' mt-12 '>
-             <div className='p-2 space-y-2 m-5 bg-[#F5F5F5] rounded-2xl drop-shadow-md '>
-             {imageHash && <Image src={imageHash} alt="Final card" className='rounded-2xl hover:scale-105 hover:rounded-2xl transition-transform cursor-pointer' width={350} height={350} /> }
+             <div className='p-2 space-y-2 m-5 bg-[#F5F5F5] rounded-2xl drop-shadow-md grid grid-cols-1 justify-items-center '>
+             {imageHash && <Image src={imageHash} alt="Final card" className='rounded-2xl hover:scale-105  hover:rounded-2xl transition-transform cursor-pointer' width={350} height={350} /> }
               <p className="flex justify-center font-semibold text-2xl">{formData.title}</p>
               <p className="flex justify-center font-semibold">{formData.description}</p>
               <p className="flex justify-center font-semibold text-xl">{formData.price} FTM</p>

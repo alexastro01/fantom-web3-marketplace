@@ -9,6 +9,10 @@ p {
   font-family: 'Open Sans', sans-serif;
 }
 
+input[type="file"] {
+  display: none;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
