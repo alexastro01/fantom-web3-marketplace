@@ -25,7 +25,8 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     
     //address of user points to array of items created
     mapping(address => uint[]) public createdByUser;
-    //
+    //address of user points to array of items bought;
+    mapping(address => uint[]) public boughtByUser;
 
     // address of user pointing to ID of item pointing to the sale price of ID of item
     mapping(address => mapping(uint => uint)) public userInventory;
@@ -37,7 +38,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     mapping(uint => address) public buyerOfId;
     // id points to sold status;
     mapping(uint => bool) public SoldStatus;
-    //  address points uint , who sells what id 
+    
     
 
 
@@ -71,6 +72,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
        balanceUser[seller] += msg.value;
        buyerOfId[_id] = msg.sender;
        SoldStatus[_id] = true;
+       boughtByUser[msg.sender].push(_id);
        emit ItemSold(_id, msg.sender, msg.value);
     }
 
@@ -131,6 +133,10 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
      return createdByUser[user];
     }
 
+     function getItemIdsBoughtByUser(address user) public view returns (uint[] memory) {
+     return boughtByUser[user];
+    }
+
 
 
 
@@ -154,18 +160,3 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
 
 }
 
-
-    //When seller creates item, mint that nft and let him set a price for the item 
-    //When buyer buys item, mint nft and add to the balance of the seller the amount set
-    //let seller of items withdraw the balance
-    //Let owner of the marketplace withdraw the balance
-    //keep track of ids, every seller that creates an item will get a new id(incrementally)
-
-
-    //todo 
-    //1. Image upload logic , with ipfs ( when mint upload image , or second step ? I think second step)
-    //2. Shipment status returns string
-    //3. think about events
-    //4. read more state to string to read in the front end
-    //5. bought item state for buyer, he will be able to view the items that he bought and shippment status in his page , custom route with address
-    //6. shipment address can be viewed only by seller that sold item to the buyer

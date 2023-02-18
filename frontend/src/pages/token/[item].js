@@ -26,7 +26,7 @@ export default function Item() {
 
     const MetadataCall = async () => {
       
-        const CONTRACT_ADDRESS = "0x2853CB399033447AAf3A14c8c4bC41Be43c0856e";
+        const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
