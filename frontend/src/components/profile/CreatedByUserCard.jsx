@@ -35,7 +35,8 @@ let arrOfTokenIds = [];
       const tokenIDs = await connectedContract.getItemIdsCreatedByUser(props.routeWallet);
       for(let i =0; i <tokenIDs.length; i ++) {
       const hex = tokenIDs[i]._hex
-      const hexNumber = hex.substring(3);
+     
+      const hexNumber = hex;
 
       console.log(hexNumber)
       arrOfTokenIds.push(hexNumber);
@@ -105,7 +106,7 @@ const mounted = useIsMounted();
       setCycleState(true);
       console.log(props.routeWallet + 'this is route state')
        
-      }, [props.routeWallet, metadataArr, props, mounted])
+      }, [props.routeWallet, metadataArr, props, props.addressOfUser])
 
         
       return (

@@ -134,7 +134,7 @@ const mounted = useIsMounted();
     setCycleState(true);
     
 
-  },[props.routeWallet, props.metadataArr, loadingState])
+  },[props.routeWallet, props.metadataArr, loadingState, props])
 
 
   return (

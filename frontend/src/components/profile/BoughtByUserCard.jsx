@@ -31,10 +31,10 @@ let arrOfTokenIds = [];
         fantomABI,
         signer
       );
-      const tokenIDs = await connectedContract.getItemIdsCreatedByUser(props.routeWallet);
+      const tokenIDs = await connectedContract.getItemIdsBoughtByUser(props.routeWallet);
       for(let i =0; i <tokenIDs.length; i ++) {
       const hex = tokenIDs[i]._hex
-      const hexNumber = hex.substring(3);
+      const hexNumber = hex;
 
       console.log(hexNumber)
       arrOfTokenIds.push(hexNumber);
@@ -99,7 +99,7 @@ let arrOfTokenIds = [];
         getTokenIds();
       }, 500)  
        
-      }, [props.routeWallet, metadataArr, props])
+      }, [props.routeWallet, metadataArr, props, props.addressOfUser])
 
         
       return (
