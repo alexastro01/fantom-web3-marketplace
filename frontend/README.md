@@ -51,3 +51,8 @@ display item bought with data :
 -image description price
 -seller
 -buyer
+
+
+to do profile section :
+-ability to update order status for sold items
+-ability to withdraw your money (also show balance)
