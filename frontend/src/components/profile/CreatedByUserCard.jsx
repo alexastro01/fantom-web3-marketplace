@@ -73,7 +73,7 @@ let initialArr = [];
     console.log(metadata.data[0]);
     
    eventsData[i] = Object.assign(eventsData[i], metadata.data[0], metadata.data[3], metadata.data[1], metadata.data[2])
-   console.log(eventsData[i]);
+  
 
     } catch(e) {
         console.log(e);
@@ -82,6 +82,7 @@ let initialArr = [];
     console.log('not valid metadata link')
   }
 }
+console.log(eventsData)
 }
 
     async function callForRecentlyCreated(){

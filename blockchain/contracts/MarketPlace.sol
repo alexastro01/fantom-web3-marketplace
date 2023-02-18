@@ -22,6 +22,10 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
 
     uint public currentId;
 
+    
+    //address of user points to array of items created
+    mapping(address => uint[]) public createdByUser;
+    //
 
     // address of user pointing to ID of item pointing to the sale price of ID of item
     mapping(address => mapping(uint => uint)) public userInventory;
@@ -33,6 +37,9 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
     mapping(uint => address) public buyerOfId;
     // id points to sold status;
     mapping(uint => bool) public SoldStatus;
+    //  address points uint , who sells what id 
+    
+
 
     address[] public sellers;
 
@@ -52,6 +59,7 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         sellers.push(msg.sender);
         SoldStatus[currentId] = false;
         _setTokenURI(currentId, tokenUri);
+        createdByUser[msg.sender].push(currentId);
         emit ItemCreated(currentId, msg.sender, sellPrice);
     }
 
@@ -117,6 +125,10 @@ contract Marketplace is ERC721, ERC721URIStorage, Ownable {
         require(userInventory[msg.sender][_id] > 0, "user doesn't own the item");
         orderStatus[_id] = ShippingStatus.Shipped;
         emit OrderStatusUpdated(ShippingStatus.Shipped, _id, msg.sender, buyerOfId[_id]);
+    }
+
+    function getItemIdsCreatedByUser(address user) public view returns (uint[] memory) {
+     return createdByUser[user];
     }
 
 
