@@ -4,18 +4,23 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useIsMounted } from '@/hooks/useIsMounted';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { ethers } from "ethers";
+import fantomABI from '../../helper/Marketplace.json'
+
+
 
 const CreatedByUserCard = (props) => {
 
 
      const [eventsData, setEventsData] = useState([]);
+     const [tokenUriData, setTokenUriData] = useState([]);
      const [stateOfArray, setstateOfArray] = useState(false);
       
     
 let initialArr = [];
 
 
-    function filterData(arg) {
+   async function filterData(arg) {
         console.log(arg + " " + "this is props")
       
             for(let i = 0; i < initialArr.length; i++) {
@@ -26,11 +31,58 @@ let initialArr = [];
                 } else {
                   console.log('fail')
                 }
-    
-    
         }
-       
+
+       await MetadataCall();
+       await getMetadataFromIpfs();
     }
+
+    const MetadataCall = async () => {
+      
+      const CONTRACT_ADDRESS = "0x2853CB399033447AAf3A14c8c4bC41Be43c0856e";
+      const { ethereum } = window;
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const connectedContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        fantomABI,
+        signer
+      );
+     
+      for(let i = 0; i < eventsData.length; i++) {
+        console.log(eventsData.length)
+      const tokenURI = await connectedContract.tokenURI(eventsData[i]._id);
+      eventsData[i] = Object.assign(eventsData[i], {metadata: tokenURI})
+       console.log(eventsData)
+      }
+
+     
+     
+  }
+
+  const getMetadataFromIpfs = async () => {
+    for(let i = 0; i < eventsData.length; i++){
+    if(eventsData[i].metadata.startsWith('https://gateway.pinata.cloud/ipfs')){
+    try{
+      const config = { headers: {
+          
+            Accept: "text/plain",
+        }}
+       
+    const metadata = await axios.get(eventsData[i].metadata, config);
+    console.log(metadata.data[0]);
+    
+   eventsData[i] = Object.assign(eventsData[i], metadata.data[0], metadata.data[3], metadata.data[1], metadata.data[2])
+   console.log(eventsData[i]);
+
+    } catch(e) {
+        console.log(e);
+    }
+  } else {
+    console.log('not valid metadata link')
+  }
+}
+}
 
     async function callForRecentlyCreated(){
         const headers = {
