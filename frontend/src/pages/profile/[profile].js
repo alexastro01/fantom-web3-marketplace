@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useIsMounted } from '@/hooks/useIsMounted';
 import CreatedByUserCard from '@/components/profile/CreatedByUserCard';
-
+import withRouter from 'next/router';
 
 
 
@@ -31,6 +31,7 @@ export default function Profile() {
 
 
     useEffect(() => {
+      
         setUserAddressState(address);
         if (address  === walletAddress) {
             setUserOwnRoute(true);
@@ -45,7 +46,10 @@ export default function Profile() {
           setRouteStateAddress(walletAddress)  
           console.log(walletAddress + " this is in parent useEffect")
       
-    },[userAddress, walletAddress, address]);
+    },[userAddress, walletAddress, address, mounted]);
+
+
+ 
 
 
 
@@ -55,13 +59,13 @@ export default function Profile() {
   return (
     <div className=''>
         <Navbar/>
-        <div className='ml-12 text-xl font-light mt-8 mb-2'>Profile: {mounted ? address : null}</div>
+        <div className='ml-12 text-xl font-light mt-8 mb-2'>Profile: {mounted ? walletAddress : null}</div>
      
 
         <div className='mx-12'>
              <div>
                 { mounted ? userOwnRoute ? <p className='text-4xl'>Your listed items</p> : <p className='text-4xl'>Listed Items</p> : null}
-                 {mounted ? <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} /> : null }
+                 {mounted ? <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} mounted={mounted} /> : null }
              </div>
         </div>
     </div>

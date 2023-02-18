@@ -7,12 +7,22 @@ import { useContext } from "react";
 import { userAddressContext } from '@/helper/userAddressContext'
 import Link from 'next/link'
 import { useIsMounted } from '@/hooks/useIsMounted'
+import { useRouter } from 'next/router'
 const Navbar = () => {
 
 
   const { userAddress, setUserAddress } = useContext(userAddressContext);
   const mounted = useIsMounted();
   const {address} = useAccount();
+
+
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    // Navigate to the dynamic route
+    router.push('/profile/[profile]', `/profile/${address}`, { shallow: true });
+  };
+
 
   useEffect(() => {
     
@@ -44,7 +54,7 @@ const Navbar = () => {
         </li>
         <li>
           
-          {mounted ? address &&  <Link href={`/profile/${address}`} class="block   rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform " aria-current="page">My Profile</Link> : null }
+          {mounted ? address &&  <Link  href={`/profile/${address}`} target="_blank" class="block   rounded-lg shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform " aria-current="page">My Profile</Link> : null }
           
         </li>
 

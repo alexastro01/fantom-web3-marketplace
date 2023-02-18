@@ -15,6 +15,7 @@ const CreatedByUserCard = (props) => {
 
      const [metadataArr, setMetadataArr] = useState([]);
      const [stateOfArr, setStateOfArr] = useState();
+     const [cycleState, setCycleState] = useState(false)
       
     
 let arrOfTokenIds = [];
@@ -47,6 +48,8 @@ let arrOfTokenIds = [];
      
   }
 
+const mounted = useIsMounted();
+
   const getMetadataFromIpfs = async () => {
 
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
@@ -74,6 +77,8 @@ let arrOfTokenIds = [];
         }}
        
     const metadata = await axios.get(tokenUri, config);
+
+    
     metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: parseInt(numberOfId)})
 
     console.log(metadataArr);
@@ -97,15 +102,18 @@ let arrOfTokenIds = [];
 
         getTokenIds();
       }, 500)  
+      setCycleState(true);
+      console.log(props.routeWallet + 'this is route state')
        
-      }, [props.routeWallet, metadataArr, props])
+      }, [props.routeWallet, metadataArr, props, mounted])
 
         
       return (
     <div>  
+      
       <div className='grid grid-cols-3'>
-        {stateOfArr ? 
-        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute} id={card.id}/></div>)) :
+        {mounted ? 
+        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute} id={card.id} routeWallet={props.routeWallet}  addressOfUser={props.addressOfUser} metadataArr={metadataArr}/></div>)) :
       <div> <FaCircle /></div>}
 
       </div>
