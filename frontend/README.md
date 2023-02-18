@@ -43,3 +43,11 @@ recently created and recently sold 4-6  max each
 how it works on main page
 browse with all the items available for sale 
 ->for every component in browse , buy now button attached to component where price is got from fantomscan/metadata :)
+after create item is successful , view it in profile
+while creating , if image is not there yet , loading or force display
+/profile route
+display item bought with data :
+-order status
+-image description price
+-seller
+-buyer
