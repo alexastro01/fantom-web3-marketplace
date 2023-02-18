@@ -13,7 +13,7 @@ const CreateNft = (props) => {
     const debouncedsellPrice = useDebounce(ethers.utils.parseEther(props.sellPrice), 500)
     const debouncedTokenUri = useDebounce(props.tokenuri, 500)
     const { config } = usePrepareContractWrite({
-      address: '0x2853CB399033447AAf3A14c8c4bC41Be43c0856e',
+      address: '0x162A384D5183c6e8A48d5fE0F84109E2d0079A73',
       abi: [
         {"inputs":[{"internalType":"uint256","name":"sellPrice","type":"uint256"},{"internalType":"string","name":"tokenUri","type":"string"}],"name":"CreateItemToSell","outputs":[],"stateMutability":"payable","type":"function"},
       ],
