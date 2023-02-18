@@ -75,7 +75,7 @@ let arrOfTokenIds = [];
         }}
        
     const metadata = await axios.get(tokenUri, config);
-    metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3])
+    metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: parseInt(numberOfId)})
 
     console.log(metadataArr);
 
@@ -90,23 +90,24 @@ let arrOfTokenIds = [];
 }
 
     
-      
+      const mounted = useIsMounted();
   
     
       useEffect(() => {
       setTimeout(() => {
-
+        
         getTokenIds();
+        console.log(metadataArr)
       }, 500)  
        
-      }, [props.routeWallet, metadataArr, props, props.addressOfUser])
+      }, [props.routeWallet, metadataArr, props, props.addressOfUser, props.stateOfPage])
 
         
       return (
     <div>  
       <div className='grid grid-cols-3'>
-        {stateOfArr ? 
-        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute}/></div>)) :
+      {mounted ? 
+        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute} id={card.id} routeWallet={props.routeWallet}  addressOfUser={props.addressOfUser} metadataArr={metadataArr} stateOfPage={props.stateOfPage}/></div>)) :
       <div> <FaCircle /></div>}
 
       </div>

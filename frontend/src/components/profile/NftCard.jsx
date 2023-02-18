@@ -29,7 +29,10 @@ const NftCard = (props) => {
       signer
     );
 
+    console.log(props.id)
+
     const sellerId = await connectedContract.forIdGetSellerAndPrice(props.id);
+  
     setSellerOfId(sellerId[0])
 
    }
@@ -71,9 +74,9 @@ const NftCard = (props) => {
       fantomABI,
       signer
     );
-    
+    console.log(props.id + "this is props.id")
     const buyerOfId = await connectedContract.buyerOfId(props.id);
-    console.log(buyerOfId)
+    console.log(buyerOfId + "this is buyerOfId")
     setBuyerOfIdState(buyerOfId)
   }
 
@@ -132,9 +135,10 @@ const mounted = useIsMounted();
     verifyOwnerShip();
     checkIfItemwasBought();
     setCycleState(true);
+    console.log(props.stateOfPage + "this is state of page")
     
 
-  },[props.routeWallet, props.metadataArr, loadingState, props])
+  },[props.routeWallet, props.metadataArr, loadingState, props, props.stateOfPage])
 
 
   return (
@@ -168,7 +172,7 @@ const mounted = useIsMounted();
     <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>You own this item</button>
      :
      soldStatusState ?
-     <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{`Sold to ` + " " + buyerOfIdState}</button>
+     <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState : 'Sold to ' + " " + props.routeWallet }</button>
      
      :
      <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy now</button>

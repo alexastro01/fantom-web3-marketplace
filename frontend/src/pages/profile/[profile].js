@@ -49,7 +49,7 @@ export default function Profile() {
           setRouteStateAddress(walletAddress)  
           console.log(walletAddress + " this is in parent useEffect")
       
-    },[userAddress, walletAddress, address, mounted]);
+    },[userAddress, walletAddress, address, mounted, stateOfPage]);
 
 
  
@@ -62,23 +62,24 @@ export default function Profile() {
   return (
     <div className=''>
         <Navbar/>
-        <div className='ml-12  font-light mt-8 mb-2 text-sm'>Profile: {mounted ? walletAddress : null}</div>
+        
      
 
         <div className='mx-12'>
              <div>
-              <div className='flex space-x-5 '>
-              <button className=' text-white font-bold w-48  rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' style={{
-                backgroundColor: stateOfPage === 1 ? `#2590EB` : '#22425e'
-              }} onClick={() => setStateOfPage(1)}>View Created Items</button>
-              <button className=' text-white font-bold w-48 rounded-lg mt-2 h-12 hover:scale-105 transition-transform '  style={{
+              <div className='flex   '>
+              <button className=' text-white font-bold w-48 mr-5  rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' style={{
                 backgroundColor: stateOfPage === 2 ? `#2590EB` : '#22425e'
+              }} onClick={() => setStateOfPage(1)}>View Created Items</button>
+              <button className=' text-white font-bold w-48 ml-5 rounded-lg mt-2 h-12 hover:scale-105 transition-transform '  style={{
+                backgroundColor: stateOfPage === 1 ? `#2590EB` : '#22425e'
               }} onClick={() => setStateOfPage(2)}>View Bought Items</button>
+              <button className=' text-white font-bold  rounded-lg mt-2 h-12 hover:scale-105 transition-transform mr-8 bg-gray-800 w-72 ml-auto '>Profile: {mounted ? walletAddress.slice(0, 18) : null}</button>
               </div>
                 { mounted ?  stateOfPage === 1 && <p className='text-4xl my-5'>{ userOwnRoute ? `Your Created Items` : 'Created Items'}</p> : null}
                 { mounted ?  stateOfPage === 2 && <p className='text-4xl my-5'>{ userOwnRoute ? `Your Bought Items` : 'Bought Items'}</p> : null}
-                 {mounted ? stateOfPage === 1 && <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} mounted={mounted} /> : null }
-                 {mounted ? stateOfPage === 2 && <BoughtByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} mounted={mounted} /> : null }
+                 {mounted ? stateOfPage === 1 && <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} mounted={mounted} stateOfPage={stateOfPage}/> : null }
+                 {mounted ? stateOfPage === 2 && <BoughtByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} mounted={mounted} stateOfPage={stateOfPage}/>  : null }
              </div>
         </div>
     </div>
