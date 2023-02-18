@@ -62,6 +62,7 @@ let arrOfTokenIds = [];
 
     for(let i = 0; i < arrOfTokenIds.length; i++){
      const numberOfId = arrOfTokenIds[i];
+     console.log(numberOfId)
       console.log('starting')
      const tokenUri = await connectedContract.tokenURI(parseInt(numberOfId));
 
@@ -73,7 +74,7 @@ let arrOfTokenIds = [];
         }}
        
     const metadata = await axios.get(tokenUri, config);
-    metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3])
+    metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: parseInt(numberOfId)})
 
     console.log(metadataArr);
 
@@ -104,7 +105,7 @@ let arrOfTokenIds = [];
     <div>  
       <div className='grid grid-cols-3'>
         {stateOfArr ? 
-        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute}/></div>)) :
+        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute} id={card.id}/></div>)) :
       <div> <FaCircle /></div>}
 
       </div>

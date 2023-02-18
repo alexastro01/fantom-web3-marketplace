@@ -61,7 +61,9 @@ let arrOfTokenIds = [];
 
 
     for(let i = 0; i < arrOfTokenIds.length; i++){
+
      const numberOfId = arrOfTokenIds[i];
+     console.log(numberOfId)
       console.log('starting')
      const tokenUri = await connectedContract.tokenURI(parseInt(numberOfId));
 
