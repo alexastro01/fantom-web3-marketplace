@@ -53,16 +53,15 @@ export default function Profile() {
 
 
   return (
-    <div>
+    <div className=''>
         <Navbar/>
-        <div>{mounted ? address : null}</div>
-        <div>{mounted ? userOwnRoute ? <div>ADDRESS OWNS THIS ROUTE</div> :<div>ADDRESS DOESN'T OWN THIS ROUTE</div> : null }</div>
-        <div>{mounted ? invalidAddress ? <div className='text-red-400'>ADDRESS NOT VALID</div> : <div></div> : null}</div>
+        <div className='ml-12 text-xl font-light mt-8 mb-2'>Profile: {mounted ? address : null}</div>
+     
 
         <div className='mx-12'>
              <div>
                 { mounted ? userOwnRoute ? <p className='text-4xl'>Your listed items</p> : <p className='text-4xl'>Listed Items</p> : null}
-                 {mounted ? <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} /> : null }
+                 {mounted ? <CreatedByUserCard routeWallet={walletAddress} addressOfUser={address} booleanOwnerOfRoute={userOwnRoute} /> : null }
              </div>
         </div>
     </div>

@@ -10,7 +10,7 @@ import NftCard from './NftCard';
 import { FaCircle } from 'react-icons/fa';
 
 
-const CreatedByUserCard = (props) => {
+const BoughtByUserCard = (props) => {
 
 
      const [metadataArr, setMetadataArr] = useState([]);
@@ -113,4 +113,4 @@ let arrOfTokenIds = [];
       )
     }
 
-export default CreatedByUserCard
+export default BoughtByUserCard
