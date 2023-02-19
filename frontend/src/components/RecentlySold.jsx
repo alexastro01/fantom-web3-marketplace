@@ -126,7 +126,7 @@ const RecentlySold = () => {
     <Carousel responsive={responsive} >
 
      {metadataArr.map(card => (
-      <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.amount} id={card.id} address={card.buyer} />
+      <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.amount} id={card.id} address={card.buyer} isSold={true} />
      ))}
   </Carousel>
    : <div>Loading</div>

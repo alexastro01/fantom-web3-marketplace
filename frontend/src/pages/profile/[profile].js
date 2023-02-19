@@ -38,9 +38,9 @@ export default function Profile() {
     useEffect(() => {
       
         setUserAddressState(address);
-        if (address  === walletAddress) {
+        if (address.toLowerCase()  === walletAddress.toLowerCase()) {
             setUserOwnRoute(true);
-          } else if (address !== walletAddress) {
+          } else if (address.toLowerCase() !== walletAddress.toLowerCase()) {
             setUserOwnRoute(false);
           }
           if (ethers.utils.isAddress(walletAddress) === false) {

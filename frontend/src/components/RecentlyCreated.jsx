@@ -95,6 +95,7 @@ const RecentlyCreated = () => {
            const metadata = await axios.get(tokenUri, config);
            console.log(metadata.data);
            metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: parseInt(dataForDisplay[i].data._id)}, {seller: dataForDisplay[i].data.seller}, {amount: dataForDisplay[i].data.amount} )
+           console.log('in recently created')
            console.log(metadataArr[i])
        
            setFinishedDataProcessing(i)
@@ -127,7 +128,7 @@ const RecentlyCreated = () => {
     <Carousel responsive={responsive}    >
 
      {metadataArr.map(card => (
-      <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.amount} id={card.id} address={card.seller} />
+      <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.price} id={card.id} address={card.seller} />
      ))}
   </Carousel>
    : <div>Loading</div>
