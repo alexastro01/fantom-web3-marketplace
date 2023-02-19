@@ -175,6 +175,7 @@ export default function Item() {
     await buyItem.wait();
     
     console.log('finished!')
+    await getBuyerOfId();
     setLoadingState(false)
     setBuySuccess(true);
    
@@ -193,7 +194,7 @@ export default function Item() {
         return (
         <div className="ml-auto">
           <Link href={`../profile/${buyerOfIdState}`} >
-        <button className='bg-gray-800 text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform ' onClick={null}>{`Sold to ${buyerOfIdState.startsWith('0x') && buyerOfIdState.slice(0,7)}`}</button>
+        <button className='bg-gray-800 text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform ' onClick={null}>Sold to {buyerOfIdState.startsWith('0x') && buyerOfIdState.slice(0,7)}</button>
         </Link>
        </div>
         )
@@ -235,7 +236,7 @@ export default function Item() {
       }
       console.log(priceState + " this is price state")
       
-    },[router, tokenIdRoute, metadataLinkState, arrayState, userAddress, loadingState, buyerOfIdState, priceState])
+    },[router, tokenIdRoute, metadataLinkState, arrayState, userAddress, loadingState, buyerOfIdState, priceState, buySuccess])
 
      return (
         <div>
