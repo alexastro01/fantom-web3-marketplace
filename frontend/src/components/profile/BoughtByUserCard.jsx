@@ -105,7 +105,7 @@ let arrOfTokenIds = [];
         
       return (
     <div>  
-      <div className='grid grid-cols-3'>
+      <div className='grid grid-cols-4'>
       {mounted ? 
         metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute} id={card.id} routeWallet={props.routeWallet}  addressOfUser={props.addressOfUser} metadataArr={metadataArr} stateOfPage={props.stateOfPage}/></div>)) :
       <div> <FaCircle /></div>}

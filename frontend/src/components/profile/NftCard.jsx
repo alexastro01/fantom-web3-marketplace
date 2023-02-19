@@ -16,7 +16,33 @@ const NftCard = (props) => {
    const[ownerOfIdState, setOwnerOfIdState] = useState();
    const[soldStatusState, setSoldStatusState] = useState();
    const[propsState, setPropsState] = useState(props);
+   const[shippingStatusState, setShippingStatusState] = useState();
    const[cycleState, setCycleState] = useState(false);
+
+   const mappingOfOrderStatus = {
+    0: 'Order Not Active',
+    1: 'Order Received',
+    2: 'Shipping in Progress',
+    3: 'Shipped'
+   }
+
+
+   async function getShippingStatus () {
+    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+    const { ethereum } = window;
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const connectedContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      fantomABI,
+      signer
+    );
+
+    const shippingStatus = await connectedContract.getShipmentStatusForId(props.id);
+    console.log(shippingStatus)
+    setShippingStatusState(shippingStatus)
+  
+   }
 
    async function forIdGetSeller() {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
@@ -136,7 +162,7 @@ const mounted = useIsMounted();
     checkIfItemwasBought();
     setCycleState(true);
     console.log(props.stateOfPage + "this is state of page")
-    
+    getShippingStatus();    
 
   },[props.routeWallet, props.metadataArr, loadingState, props, props.stateOfPage])
 
@@ -145,23 +171,30 @@ const mounted = useIsMounted();
     
     <div className=' mx-6 my-6 '>
        
-    <div className='p-0 space-y-5  bg-[#F5F5F5]  rounded-t-2xl  drop-shadow-md grid grid-cols-1 justify-items-center min-h-[600px]  '>
- 
-    <Image src={propsState.image} width={400} height={400} className="rounded-lg pt-5 hover:scale-105 transition-transform "/>
+    <div className='p-0 space-y-3  bg-[#F5F5F5]  rounded-t-2xl  drop-shadow-md grid grid-cols-1 justify-items-center min-h-[600px]  '>
+     <div className='w-[350px] h-[350px] grid items-center  justify-items-center'>
+    <Image src={propsState.image} width={300} height={300} className="rounded-lg pt-5 hover:scale-105 transition-transform  "/>
+    </div>
      {/* <Image src={props.image} width={400} height={400} className="rounded-lg pt-5 hover:scale-105 transition-transform "/> */}
      
      <p className="flex justify-center font-semibold text-2xl">{propsState.title}</p>
-     <p className="flex justify-center font-semibold">{propsState.description}</p>
+     {shippingStatusState > 0 && <p className="flex justify-center font-semibold text-md">Status : {mappingOfOrderStatus[shippingStatusState]}</p>}
+     <p className="  font-semibold text-center">{propsState.description}</p>
     
      <p className="flex justify-center font-semibold text-xl">{propsState.price} FTM</p>
       
      </div>
-
+     <div className='flex justify-center'>
+       {
+        props.stateOfPage === 1 && props.ownerOfRoute == true  && soldStatusState == true &&
+        <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >Update Order Status</button>
+       }
+     </div>
      <div className='flex justify-center'>
       {
      loadingState  ?
      <a href={`https://ftmscan.com/tx/${txnHash}`} className='w-full ' target="_blank" >
-      <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>
+      <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>
       {!txnHash ? 'Initializing txn...' : 'View your txn'}
     </button>
     </a>
@@ -169,30 +202,30 @@ const mounted = useIsMounted();
     :
      propsState.addressOfUser == ownerOfIdState
      ?
-    <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>You own this item</button>
+    <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>You own this item</button>
      :
      soldStatusState ?
-     <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState : 'Sold to ' + " " + props.routeWallet }</button>
+     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState : 'Sold to ' + " " + props.routeWallet }</button>
      
      :
-     <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy now</button>
+     <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy now</button>
      
      
     //  routeOwnsId ?
       
-    //   <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>You own this item</button>
+    //   <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>You own this item</button>
     //  :
     //  txnHash ?
     //  <a href={`https://ftmscan.com/tx/${txnHash}`} className='w-full ' target="_blank" >
-    //  <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>
+    //  <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>
     //  View your TXN
     //  </button>
     //  </a>
     //  :
     //  props.addressOfUser == ownerOfIdState ?
-    //  <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >You bought this item</button>
+    //  <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >You bought this item</button>
     //  :
-    //  <button className='bg-blue-600 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy now</button>
+    //  <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy now</button>
      
    
      
