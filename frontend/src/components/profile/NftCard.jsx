@@ -6,6 +6,7 @@ import fantomABI from '../../helper/Marketplace.json'
 import spinner from '../../images/spinner.gif'
 import { useRouter } from 'next/router';
 import { useIsMounted } from '@/hooks/useIsMounted';
+import Link from 'next/link';
 const NftCard = (props) => {
 
    const[loadingState, setLoadingState] = useState();
@@ -186,6 +187,8 @@ const NftCard = (props) => {
     }
   }
 
+
+
   
 const mounted = useIsMounted();
   useEffect(() => {
@@ -206,7 +209,9 @@ const mounted = useIsMounted();
        
     <div className='p-0 space-y-3  bg-[#F5F5F5]  rounded-t-2xl  drop-shadow-md grid grid-cols-1 justify-items-center min-h-[600px]  '>
      <div className='w-[350px] h-[350px] grid items-center  justify-items-center'>
+    <Link href={`../token/${props.id}`}>
     <Image src={propsState.image} width={300} height={300} className="rounded-lg pt-5 hover:scale-105 transition-transform  "/>
+    </Link>
     </div>
      {/* <Image src={props.image} width={400} height={400} className="rounded-lg pt-5 hover:scale-105 transition-transform "/> */}
      
@@ -246,6 +251,9 @@ const mounted = useIsMounted();
      soldStatusState && props.isBrowsingPage ?
      
      <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>Sold to {buyerOfIdState}</button>
+     :
+     ownerOfIdState === props.addressOfUser && props.isBrowsingPage ?
+     <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={null}>You own this item</button>
      :
      <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy Now</button>
      

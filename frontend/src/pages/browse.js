@@ -7,12 +7,15 @@ import fantomABI from '../helper/Marketplace.json'
 import { useIsMounted } from '@/hooks/useIsMounted';
 import { FaCircle } from 'react-icons/fa';
 import NftCard from '@/components/profile/NftCard';
+import { useContext } from 'react';
+import { userAddressContext } from '@/helper/userAddressContext';
 const Browse = () => {
 
 
   
   const [metadataArr, setMetadataArr] = useState([]);
   const [stateOfArr, setStateOfArr] = useState();
+  const {userAddress, setUserAddress} = useContext(userAddressContext)
    
  
 let arrOfTokenIds = [];
@@ -100,7 +103,7 @@ useEffect(() => {
     <Navbar />
     <div className='grid grid-cols-4 mx-12'>
     {stateOfArr ? 
-        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} id={card.id}  metadataArr={metadataArr} isBrowsingPage={true} /></div>)) :
+        metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} id={card.id}  metadataArr={metadataArr} isBrowsingPage={true} addressOfUser={userAddress}/></div>)) :
       <div> <FaCircle /></div>}
       </div>
 

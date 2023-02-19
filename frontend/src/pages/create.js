@@ -213,7 +213,7 @@ const Create = () => {
              <p className='text-5xl mt-8'>Step 3 : Confirm 🎉</p>
              <div className=' mt-12 '>
              <div className='p-2 space-y-2 m-5 bg-[#F5F5F5] rounded-2xl drop-shadow-md grid grid-cols-1 justify-items-center '>
-             {imageHash && <Image src={imageHash} alt="Final card" className='rounded-2xl hover:scale-105  hover:rounded-2xl transition-transform cursor-pointer' width={350} height={350} /> }
+             {imageHash && <Image src={imageHash} alt="Final card" className='rounded-2xl hover:scale-105  hover:rounded-2xl transition-transform cursor-pointer' width={350} height={350} priority={true} /> }
               <p className="flex justify-center font-semibold text-2xl">{formData.title}</p>
               <p className="flex justify-center font-semibold">{formData.description}</p>
               <p className="flex justify-center font-semibold text-xl">{formData.price} FTM</p>

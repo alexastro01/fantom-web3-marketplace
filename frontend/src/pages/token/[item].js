@@ -89,6 +89,7 @@ export default function Item() {
     <p className="text-5xl">
       Price:  {arrayState[3].price}
     </p>
+    
 </div>
 
 </div> : <div>Loading...</div>} 
