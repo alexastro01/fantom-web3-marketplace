@@ -16,8 +16,10 @@ export default function Home() {
       </Head>
       <Navbar />
       <Header />
+      <div className='space-y-20'>
       <RecentlyCreated />
       <RecentlySold />
+      </div>
     </>
   )
 }

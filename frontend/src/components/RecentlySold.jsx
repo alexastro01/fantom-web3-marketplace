@@ -1,8 +1,38 @@
 import React from 'react'
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import { ethers } from 'ethers';
+import fantomABI from '../helper/Marketplace.json'
+import LandingPageNftEvent from './LandingPageNftEvent';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 const RecentlySold = () => {
+
+  const [dataForDisplay, setDataForDisplay] = useState([]);
+  const [metadataArr, setMetadataArr] = useState([]);
+  const [finishedDataProcessing , setFinishedDataProcessing] = useState(0);
+
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
 
 
     async function callForRecentlySold(){
@@ -13,44 +43,95 @@ const RecentlySold = () => {
         };
         
         const data ={"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"_id","type":"uint256"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ItemSold","type":"event"};
-        
-        axios.post(
+       try{ 
+       const response = await axios.post(
           'https://deep-index.moralis.io/api/v2/0x162A384D5183c6e8A48d5fE0F84109E2d0079A73/events?chain=fantom&from_block=55587828&topic=0xa574c741071bb18f51fa88c17aeefec514bebf670ca22a3736fba6504ecbb763',
           data,
           { headers }
         )
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
+
+        for (let i = 0; i < 5 ; i ++){
+          dataForDisplay.push(response.data.result[i])
+        }
+       
+
+ 
+       } catch(e) {
+        console.log(e);
+       }
+
+      }
+
+
+      async function getMetadata() {
+        const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          fantomABI,
+          signer
+        )
+        await callForRecentlySold();
+       
+        for (let i = 0; i < dataForDisplay.length; i++){
+            
+        
+
+            const numberOfId = dataForDisplay[i].data._id;
+      
+            const tokenUri = await connectedContract.tokenURI(numberOfId);
+       
+            console.log(tokenUri)
+           try{
+             const config = { headers: {
+                 
+                   Accept: "text/plain",
+               }}
+           
+              
+           const metadata = await axios.get(tokenUri, config);
+           console.log(metadata.data);
+           metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: parseInt(dataForDisplay[i].data._id)}, {buyer: dataForDisplay[i].data.buyer}, {amount: dataForDisplay[i].data.amount} )
+           console.log(metadataArr[i])
+       
+           setFinishedDataProcessing(i)
+       
+           } catch(e) {
+               console.log(e);
+           }
+         
+       
+     
+        console.log(metadataArr);
+     
+      }
       }
     
       useEffect(() => {
+ 
+      
+          getMetadata();
     
-      }, [])
+    
+      }, [ metadataArr])
 
   return (
 
-    <div>
-    <div className='grid grid-cols-4 justify-items-center '>
-         <div className=''>
-         recentlySold
-         </div>
-         <div>
-         recentlySold
-         </div>
-         <div>
-         recentlySold
-         </div>
-         <div>
-         recentlySold
-         </div>
-    </div>
-    <div>
- 
-    </div>
+<div className='mx-48 my-12'>
+<h1 className='font-light text-4xl mb-8'>Recently Sold</h1>
+  {
+    finishedDataProcessing > 0 ?
+    <Carousel responsive={responsive} >
+
+     {metadataArr.map(card => (
+      <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.amount} id={card.id} address={card.buyer} />
+     ))}
+  </Carousel>
+   : <div>Loading</div>
+}
+   
 </div>
   )
 }
