@@ -8,6 +8,7 @@ import { ethers } from "ethers";
 import fantomABI from '../../helper/Marketplace.json'
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Item() { 
   
@@ -17,12 +18,30 @@ export default function Item() {
     const [metadataLinkState, setMetadataLinkState] = useState();
     const [arrayState, setArrayState] = useState([]);
     const [loading, setIsLoading] = useState(true);
+    const [ownerOfState, setOwnerOfState] = useState();
 
     const router = useRouter();
     const pathArray = router.asPath.split('/');
     const tokenIdRoute = pathArray[2];
 
 
+
+    const getOwnerOfId = async () => {
+      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+      const { ethereum } = window;
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const connectedContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        fantomABI,
+        signer
+      );
+      if(tokenIdRoute >= 0) {
+      const ownerOf = await connectedContract.ownerOf(tokenIdRoute);
+      console.log(ownerOf)
+      setOwnerOfState(ownerOf)
+      }
+    }
 
     const MetadataCall = async () => {
       
@@ -69,27 +88,52 @@ export default function Item() {
       console.log(tokenIdRoute);
       setTokenRouteState(tokenIdRoute)
       MetadataCall();
+      getOwnerOfId();
     },[router, tokenIdRoute, metadataLinkState, arrayState])
 
      return (
         <div>
            <Navbar />
- {loading === false  ?   <div className="grid grid-cols-2 justify-items-center mt-20">
+ {loading === false  ?   <div className="grid grid-cols-2 justify-items-center mt-20 mx-20">
 
 <div>
     <Image src={arrayState[1].image} width={500} height={500} /> 
 </div>
-<div>
-    <p className="text-5xl">
-     Title: {arrayState[0].title}
+<div className="space-y-5 grid-grid-cols-1 text-center justify-items-center">
+    <div>
+      <Link href={`../profile/${ownerOfState}`} >
+      <p className="text-xl">
+        Owner:
+     {ownerOfState == userAddress ? <span className="text-blue-600"> You</span> :<span className="text-blue-500"> {ownerOfState} </span>}
+     </p>
+     </Link>
+    </div> 
+    <div>
+    <p className="text-md">
+     Title:
     </p>
-    <p className="text-5xl">
-      Description:  {arrayState[2].description}
+    <p className="text-4xl">
+     {arrayState[0].title}
     </p>
-    <p className="text-5xl">
-      Price:  {arrayState[3].price}
+    </div>
+    <div>
+    <p className="text-md ">
+      Description:
     </p>
-    
+    <p className="text-4xl px-32 text-center">
+    {arrayState[2].description}
+    </p>
+    </div>
+    <div>
+    <p className="text-md">
+      Price:
+    </p>
+    <p className="text-4xl">
+    {arrayState[3].price} FTM
+    </p>
+    </div>
+ 
+
 </div>
 
 </div> : <div>Loading...</div>} 
