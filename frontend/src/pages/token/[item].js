@@ -9,6 +9,7 @@ import fantomABI from '../../helper/Marketplace.json'
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import TokenInfoComponent from "@/components/TokenInfoComponent";
 
 export default function Item() { 
   
@@ -19,11 +20,31 @@ export default function Item() {
     const [arrayState, setArrayState] = useState([]);
     const [loading, setIsLoading] = useState(true);
     const [ownerOfState, setOwnerOfState] = useState();
-
+    const [sellerState, setSellerState] = useState();
     const router = useRouter();
     const pathArray = router.asPath.split('/');
     const tokenIdRoute = pathArray[2];
 
+
+
+    const forIdGetSeller = async () => {
+      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+      const { ethereum } = window;
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const connectedContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        fantomABI,
+        signer
+      );
+      if(tokenIdRoute >= 0) {
+      const sellerandId = await connectedContract.forIdGetSellerAndPrice(tokenIdRoute);
+      console.log(sellerandId)
+      const seller = sellerandId[0];
+      setSellerState(seller);
+      
+      }
+    }
 
 
     const getOwnerOfId = async () => {
@@ -89,6 +110,7 @@ export default function Item() {
       setTokenRouteState(tokenIdRoute)
       MetadataCall();
       getOwnerOfId();
+      forIdGetSeller();
     },[router, tokenIdRoute, metadataLinkState, arrayState])
 
      return (
@@ -99,7 +121,7 @@ export default function Item() {
 <div>
     <Image src={arrayState[1].image} width={500} height={500} /> 
 </div>
-<div className="space-y-5 grid-grid-cols-1 text-center justify-items-center">
+<div className="space-y-5 grid-grid-cols-1 border-4 text-center justify-items-center">
     <div>
       <Link href={`../profile/${ownerOfState}`} >
       <p className="text-xl">
@@ -109,7 +131,7 @@ export default function Item() {
      </Link>
     </div> 
     <div>
-    <p className="text-md">
+    <p className="text-md text-left">
      Title:
     </p>
     <p className="text-4xl">
@@ -117,7 +139,7 @@ export default function Item() {
     </p>
     </div>
     <div>
-    <p className="text-md ">
+    <p className="text-md text-left">
       Description:
     </p>
     <p className="text-4xl px-32 text-center">
@@ -125,7 +147,7 @@ export default function Item() {
     </p>
     </div>
     <div>
-    <p className="text-md">
+    <p className="text-md text-left">
       Price:
     </p>
     <p className="text-4xl">
