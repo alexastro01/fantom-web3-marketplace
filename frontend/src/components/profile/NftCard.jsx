@@ -240,12 +240,14 @@ const mounted = useIsMounted();
      ?
     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>You own this item</button>
      :
-     soldStatusState ?
+     soldStatusState && !props.isBrowsingPage ?
      <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState : 'Sold to ' + " " + props.routeWallet }</button>
-     
      :
-     <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy now</button>
+     soldStatusState && props.isBrowsingPage ?
      
+     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>Sold to {buyerOfIdState}</button>
+     :
+     <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy Now</button>
      
     //  routeOwnsId ?
       
