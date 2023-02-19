@@ -10,6 +10,7 @@ import Link from 'next/link';
 const NftCard = (props) => {
 
    const[loadingState, setLoadingState] = useState();
+   const[buySuccess, setBuySuccess] = useState();
    const[sellerofId, setSellerOfId] = useState();
    const[txnHash, setTxnHash] = useState();
    const[buyerOfIdState, setBuyerOfIdState] = useState();
@@ -117,6 +118,7 @@ const NftCard = (props) => {
       
       console.log('finished!')
       setLoadingState(false)
+      setBuySuccess(true);
      
   
   }
@@ -255,7 +257,7 @@ const mounted = useIsMounted();
      ownerOfIdState === props.addressOfUser && props.isBrowsingPage ?
      <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={null}>You own this item</button>
      :
-     <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buyItem}>Buy Now</button>
+     <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={buySuccess ? null : buyItem}>{buySuccess ? 'Success' : 'Buy Now'}</button>
      
     //  routeOwnsId ?
       
