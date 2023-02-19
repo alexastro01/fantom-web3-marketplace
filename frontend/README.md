@@ -53,6 +53,9 @@ display item bought with data :
 -buyer
 
 to do :
--token Id individual route + when click on image, it goes to token route, conditional buy now button , shipping status, you own this item .. etc
--browser route
+-Loading state handling when loading profile page 
+ > listed item section
+ > bought item section 
+-Loading state main page 
+-Loading state browse page
 -main page design 
