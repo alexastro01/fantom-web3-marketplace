@@ -64,14 +64,14 @@ const NftCard = (props) => {
 
    async function getShippingStatus () {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      signer
-    );
+        const { ethereum } = window;
+        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          fantomABI,
+          provider
+        )
 
     const shippingStatus = await connectedContract.getShipmentStatusForId(props.id);
     console.log(shippingStatus)
@@ -81,14 +81,14 @@ const NftCard = (props) => {
 
    async function forIdGetSeller() {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      signer
-    );
+        const { ethereum } = window;
+        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          fantomABI,
+          provider
+        )
 
     console.log(props.id)
 
@@ -129,13 +129,13 @@ const NftCard = (props) => {
   async function getBuyerOfId() {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
     const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
     const signer = provider.getSigner();
     const connectedContract = new ethers.Contract(
       CONTRACT_ADDRESS,
       fantomABI,
-      signer
-    );
+      provider
+    )
     console.log(props.id + "this is props.id")
     const buyerOfId = await connectedContract.buyerOfId(props.id);
     console.log(buyerOfId + "this is buyerOfId")
@@ -145,14 +145,14 @@ const NftCard = (props) => {
 
   async function verifyOwnerShip() {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      signer
-    );
+        const { ethereum } = window;
+        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          fantomABI,
+          provider
+        )
     
     const ownerOfId = await connectedContract.ownerOf(props.id);
     console.log(ownerOfId)
@@ -172,13 +172,13 @@ const NftCard = (props) => {
   async function checkIfItemwasBought () {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
     const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
     const signer = provider.getSigner();
     const connectedContract = new ethers.Contract(
       CONTRACT_ADDRESS,
       fantomABI,
-      signer
-    );
+      provider
+    )
     
     const soldStatus = await connectedContract.SoldStatus(props.id);
     console.log(soldStatus + " " +"soldstatus")

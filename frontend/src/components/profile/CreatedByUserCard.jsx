@@ -25,13 +25,13 @@ let arrOfTokenIds = [];
       
       const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
       const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
       const signer = provider.getSigner();
       const connectedContract = new ethers.Contract(
         CONTRACT_ADDRESS,
         fantomABI,
-        signer
-      );
+        provider
+      )
       const tokenIDs = await connectedContract.getItemIdsCreatedByUser(props.routeWallet);
       for(let i =0; i <tokenIDs.length; i ++) {
       const hex = tokenIDs[i]._hex
@@ -54,15 +54,14 @@ const mounted = useIsMounted();
   const getMetadataFromIpfs = async () => {
 
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      signer
-    )
-
+        const { ethereum } = window;
+        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          fantomABI,
+          provider
+        )
 
     for(let i = 0; i < arrOfTokenIds.length; i++){
      const numberOfId = arrOfTokenIds[i];

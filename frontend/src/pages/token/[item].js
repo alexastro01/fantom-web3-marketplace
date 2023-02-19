@@ -36,13 +36,13 @@ export default function Item() {
     const forIdGetSeller = async () => {
       const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
       const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
       const signer = provider.getSigner();
       const connectedContract = new ethers.Contract(
         CONTRACT_ADDRESS,
         fantomABI,
-        signer
-      );
+        provider
+      )
       if(tokenIdRoute >= 0) {
       const sellerandId = await connectedContract.forIdGetSellerAndPrice(tokenIdRoute);
       console.log(sellerandId)
@@ -65,13 +65,13 @@ export default function Item() {
     const getOwnerOfId = async () => {
       const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
       const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
       const signer = provider.getSigner();
       const connectedContract = new ethers.Contract(
         CONTRACT_ADDRESS,
         fantomABI,
-        signer
-      );
+        provider
+      )
       if(tokenIdRoute >= 0) {
       const ownerOf = await connectedContract.ownerOf(tokenIdRoute);
       console.log(ownerOf)
@@ -81,15 +81,15 @@ export default function Item() {
 
     const MetadataCall = async () => {
       
-        const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-        const { ethereum } = window;
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          fantomABI,
-          signer
-        );
+      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+      const { ethereum } = window;
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
+      const signer = provider.getSigner();
+      const connectedContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        fantomABI,
+        provider
+      )
         if(tokenIdRoute >= 0) {
         const tokenURI = await connectedContract.tokenURI(tokenIdRoute);
         console.log(tokenURI)
@@ -123,13 +123,13 @@ export default function Item() {
     const getSoldStatus = async () => {
       const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
       const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
       const signer = provider.getSigner();
       const connectedContract = new ethers.Contract(
         CONTRACT_ADDRESS,
         fantomABI,
-        signer
-      );
+        provider
+      )
       if(tokenIdRoute >= 0) {
       const soldStatus = await connectedContract.SoldStatus(tokenIdRoute);
       console.log(soldStatus)
@@ -141,13 +141,13 @@ export default function Item() {
     const getBuyerOfId = async () => {
       const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
       const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
       const signer = provider.getSigner();
       const connectedContract = new ethers.Contract(
         CONTRACT_ADDRESS,
         fantomABI,
-        signer
-      );
+        provider
+      )
       if(tokenIdRoute >= 0) {
       const buyerOfId = await connectedContract.buyerOfId(tokenIdRoute);
       console.log(buyerOfId)
