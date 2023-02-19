@@ -249,12 +249,12 @@ const mounted = useIsMounted();
      :
      soldStatusState && !props.isBrowsingPage ?
      <Link href={`../profile/${buyerOfIdState}`} target="_blank">
-     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState : 'Sold to ' + " " + props.routeWallet }</button>
+     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState  : 'Sold to ' + " " + props.routeWallet }</button>
      </Link>
      :
      soldStatusState && props.isBrowsingPage ?
      
-     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>Sold to {buyerOfIdState}</button>
+     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform '>Sold to {buyerOfIdState && buyerOfIdState.slice(0,7)}</button>
      :
      ownerOfIdState === props.addressOfUser && props.isBrowsingPage ?
      <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' onClick={null}>You own this item</button>
