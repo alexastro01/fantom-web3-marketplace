@@ -27,6 +27,39 @@ const NftCard = (props) => {
    }
 
 
+  async function updateOrderStatus() {
+    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+    const { ethereum } = window;
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const connectedContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      fantomABI,
+      signer
+    );
+
+    const shippingStatus = await connectedContract.updateShipmentStatus(props.id);
+    
+    await getShippingStatus();
+  }
+
+
+  async function finalizeOrder() {
+    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+    const { ethereum } = window;
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const connectedContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      fantomABI,
+      signer
+    );
+
+    const shippingStatus = await connectedContract.finalizeOrder(props.id);
+    
+    await getShippingStatus();
+  }
+
    async function getShippingStatus () {
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
     const { ethereum } = window;
@@ -164,7 +197,7 @@ const mounted = useIsMounted();
     console.log(props.stateOfPage + "this is state of page")
     getShippingStatus();    
 
-  },[props.routeWallet, props.metadataArr, loadingState, props, props.stateOfPage])
+  },[props.routeWallet, props.metadataArr, loadingState, props, props.stateOfPage, shippingStatusState])
 
 
   return (
@@ -186,8 +219,11 @@ const mounted = useIsMounted();
      </div>
      <div className='flex justify-center'>
        {
-        props.stateOfPage === 1 && props.ownerOfRoute == true  && soldStatusState == true &&
-        <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >Update Order Status</button>
+        props.stateOfPage === 1 && props.ownerOfRoute == true  && soldStatusState == true && 
+        <button className='bg-[#2590EB] text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' 
+        onClick={shippingStatusState < 2 ? updateOrderStatus : finalizeOrder } >
+          Update Order Status
+          </button>
        }
      </div>
      <div className='flex justify-center'>
