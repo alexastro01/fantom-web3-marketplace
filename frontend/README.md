@@ -52,7 +52,7 @@ display item bought with data :
 -seller
 -buyer
 
-
-to do profile section :
--ability to update order status for sold items
--ability to withdraw your money (also show balance)
+to do :
+-token Id individual route + when click on image, it goes to token route, conditional buy now button , shipping status, you own this item .. etc
+-browser route
+-main page design 
