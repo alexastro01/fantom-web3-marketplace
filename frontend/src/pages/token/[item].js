@@ -21,6 +21,12 @@ export default function Item() {
     const [loading, setIsLoading] = useState(true);
     const [ownerOfState, setOwnerOfState] = useState();
     const [sellerState, setSellerState] = useState();
+    const [soldStatusState, setSoldStatusState] = useState();
+    const [buyerOfIdState, setBuyerOfIdState] = useState('');
+    const [buySuccess, setBuySuccess] = useState();
+    const [loadingState, setLoadingState] = useState();
+    const [priceState, setPriceState] = useState();
+    const [txnHash, setTxnHash] = useState();
     const router = useRouter();
     const pathArray = router.asPath.split('/');
     const tokenIdRoute = pathArray[2];
@@ -41,7 +47,16 @@ export default function Item() {
       const sellerandId = await connectedContract.forIdGetSellerAndPrice(tokenIdRoute);
       console.log(sellerandId)
       const seller = sellerandId[0];
-      setSellerState(seller);
+      setSellerState(seller)
+      const price = sellerandId[1];
+      console.log(price._hex)
+      const priceset = parseInt(price._hex)
+      const pricetoeth = ethers.utils.formatEther(price._hex)
+      console.log("priceeee" + " " + pricetoeth)
+      setPriceState(pricetoeth)
+      
+      
+      ;
       
       }
     }
@@ -104,6 +119,109 @@ export default function Item() {
     }
     }
 
+
+    const getSoldStatus = async () => {
+      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+      const { ethereum } = window;
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const connectedContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        fantomABI,
+        signer
+      );
+      if(tokenIdRoute >= 0) {
+      const soldStatus = await connectedContract.SoldStatus(tokenIdRoute);
+      console.log(soldStatus)
+      setSoldStatusState(soldStatus)
+      }
+    }
+
+
+    const getBuyerOfId = async () => {
+      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+      const { ethereum } = window;
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const connectedContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        fantomABI,
+        signer
+      );
+      if(tokenIdRoute >= 0) {
+      const buyerOfId = await connectedContract.buyerOfId(tokenIdRoute);
+      console.log(buyerOfId)
+      setBuyerOfIdState(buyerOfId)
+      }
+    }
+
+
+    
+  async function buyItem() {
+    
+      
+    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+    const { ethereum } = window;
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const connectedContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      fantomABI,
+      signer
+    );
+    setLoadingState(true)
+    const buyItem = await connectedContract.BuyItem(tokenIdRoute, sellerState, {value: ethers.utils.parseEther(`${priceState}`)});
+    setTxnHash(buyItem.hash)
+    await buyItem.wait();
+    
+    console.log('finished!')
+    setLoadingState(false)
+    setBuySuccess(true);
+   
+
+}
+
+    const RenderMethod = () => {
+     if(soldStatusState) {
+      if(buyerOfIdState == userAddress) {
+        return (
+          <div className="ml-auto">
+           <button className='bg-[#2590EB] text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform ' onClick={null}>{'You bought this item'}</button>
+          </div>
+        )
+      } else if (buyerOfIdState != userAddress) {
+        return (
+        <div className="ml-auto">
+          <Link href={`../profile/${buyerOfIdState}`} >
+        <button className='bg-gray-800 text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform ' onClick={null}>{`Sold to ${buyerOfIdState.startsWith('0x') && buyerOfIdState.slice(0,7)}`}</button>
+        </Link>
+       </div>
+        )
+      }
+    } else  {
+      if(ownerOfState == userAddress) {
+        return (
+          <div className="ml-auto">
+          <button className='bg-[#2590EB] text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform ' onClick={null}>{'Listed by you'}</button>
+         </div>
+        )
+      } else {
+        return (
+          <div className="ml-auto">
+            { 
+     loadingState  ?
+     <a href={`https://ftmscan.com/tx/${txnHash}`} className='w-full ' target="_blank" >
+      <button className='bg-gray-800  text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform'>
+      {!txnHash ? 'Initializing txn...' : 'View your txn'}
+    </button>
+    </a> : <button className='bg-[#2590EB] text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform' onClick={buySuccess ? null : buyItem}>{buySuccess ? 'Success' : 'Buy Now'}</button>}
+          
+         </div>
+        )
+      }
+    } 
+    }
+
     useEffect(() =>{
       console.log(pathArray)
       console.log(tokenIdRoute);
@@ -111,52 +229,47 @@ export default function Item() {
       MetadataCall();
       getOwnerOfId();
       forIdGetSeller();
-    },[router, tokenIdRoute, metadataLinkState, arrayState])
+      getSoldStatus();
+      if(soldStatusState) {
+      getBuyerOfId();
+      }
+      console.log(priceState + " this is price state")
+      
+    },[router, tokenIdRoute, metadataLinkState, arrayState, userAddress, loadingState, buyerOfIdState, priceState])
 
      return (
         <div>
            <Navbar />
- {loading === false  ?   <div className="grid grid-cols-2 justify-items-center mt-20 mx-20">
+ {loading === false  ?   <div className="grid grid-cols-1 justify-items-center mt-20 mx-0">
 
 <div>
-    <Image src={arrayState[1].image} width={500} height={500} /> 
-</div>
-<div className="space-y-5 grid-grid-cols-1 border-4 text-center justify-items-center">
-    <div>
-      <Link href={`../profile/${ownerOfState}`} >
-      <p className="text-xl">
+<Link href={`../profile/${ownerOfState}`}>
+    <p className="text-xl">
+      
         Owner:
-     {ownerOfState == userAddress ? <span className="text-blue-600"> You</span> :<span className="text-blue-500"> {ownerOfState} </span>}
+     {ownerOfState == userAddress ? <span className="text-blue-600"> You</span> :<span className="text-blue-500 font-semibold"> {ownerOfState} </span>}
      </p>
      </Link>
-    </div> 
-    <div>
-    <p className="text-md text-left">
-     Title:
-    </p>
     <p className="text-4xl">
      {arrayState[0].title}
     </p>
-    </div>
-    <div>
-    <p className="text-md text-left">
-      Description:
+    <Image src={arrayState[1].image} width={500} height={500} />
+    <p className="text-4xl text-left max-w-[500px] ">
+    {arrayState[2].description} 
     </p>
-    <p className="text-4xl px-32 text-center">
-    {arrayState[2].description}
-    </p>
-    </div>
-    <div>
     <p className="text-md text-left">
       Price:
     </p>
+    <div className="flex">
     <p className="text-4xl">
     {arrayState[3].price} FTM
     </p>
+    <RenderMethod />
     </div>
- 
-
+    
+     
 </div>
+
 
 </div> : <div>Loading...</div>} 
   
