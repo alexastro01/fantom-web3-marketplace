@@ -9,6 +9,7 @@ import { FaCircle } from 'react-icons/fa';
 import NftCard from '@/components/profile/NftCard';
 import { useContext } from 'react';
 import { userAddressContext } from '@/helper/userAddressContext';
+import LoadingComponent from '@/components/LoadingComponent'
 const Browse = () => {
 
 
@@ -104,7 +105,7 @@ useEffect(() => {
     <div className='grid grid-cols-4 mx-12'>
     {stateOfArr ? 
         metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} id={card.id}  metadataArr={metadataArr} isBrowsingPage={true} addressOfUser={userAddress}/></div>)) :
-      <div> <FaCircle /></div>}
+      <div> <LoadingComponent /></div>}
       </div>
 
     </div>

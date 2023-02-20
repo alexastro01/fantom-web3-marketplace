@@ -10,6 +10,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import TokenInfoComponent from "@/components/TokenInfoComponent";
+import LoadingComponent from "@/components/LoadingComponent";
 
 export default function Item() { 
   
@@ -272,7 +273,7 @@ export default function Item() {
 </div>
 
 
-</div> : <div>Loading...</div>} 
+</div> : <div><LoadingComponent /></div>} 
   
         </div>
      )
