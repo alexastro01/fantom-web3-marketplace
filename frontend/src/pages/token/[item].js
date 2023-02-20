@@ -13,6 +13,7 @@ import TokenInfoComponent from "@/components/TokenInfoComponent";
 import LoadingComponent from "@/components/LoadingComponent";
 import { ConnectedContractRead } from "@/hooks/ConnectedContractRead";
 
+
 export default function Item() { 
   
 
@@ -34,6 +35,7 @@ export default function Item() {
     const tokenIdRoute = pathArray[2];
     
     const contractToRead = ConnectedContractRead();
+
 
 
     const forIdGetSeller = async () => {
@@ -122,7 +124,6 @@ export default function Item() {
     
   async function buyItem() {
     
-      
     const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
     const { ethereum } = window;
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -131,7 +132,7 @@ export default function Item() {
       CONTRACT_ADDRESS,
       fantomABI,
       signer
-    );
+    )
     setLoadingState(true)
     const buyItem = await connectedContract.BuyItem(tokenIdRoute, sellerState, {value: ethers.utils.parseEther(`${priceState}`)});
     setTxnHash(buyItem.hash)

@@ -9,6 +9,7 @@ import { useIsMounted } from '@/hooks/useIsMounted';
 import Link from 'next/link';
 import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 
+
 const NftCard = (props) => {
 
    const[loadingState, setLoadingState] = useState();
@@ -31,6 +32,7 @@ const NftCard = (props) => {
    }
 
    const contractToRead = ConnectedContractRead();
+ 
 
 
   async function updateOrderStatus() {
@@ -42,8 +44,7 @@ const NftCard = (props) => {
       CONTRACT_ADDRESS,
       fantomABI,
       signer
-    );
-
+    )
     const shippingStatus = await connectedContract.updateShipmentStatus(props.id);
     
     await getShippingStatus();
@@ -59,7 +60,7 @@ const NftCard = (props) => {
       CONTRACT_ADDRESS,
       fantomABI,
       signer
-    );
+    )
 
     const shippingStatus = await connectedContract.finalizeOrder(props.id);
     
@@ -89,16 +90,16 @@ const NftCard = (props) => {
 
   async function buyItem() {
     
-      
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        signer
-      );
+    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
+    const { ethereum } = window;
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const connectedContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      fantomABI,
+      signer
+    )
+  
       setLoadingState(true)
       const buyItem = await connectedContract.BuyItem(props.id, sellerofId, {value: ethers.utils.parseEther(`${props.price}`)});
       setTxnHash(buyItem.hash)

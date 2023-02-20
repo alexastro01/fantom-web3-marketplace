@@ -25,15 +25,16 @@ export default function Profile() {
     const [stateOfPage, setStateOfPage] = useState(1)
     const mounted = useIsMounted(); 
     const { address } = useAccount();
-    const contractToRead = ConnectedContractRead();
+
     const [userOwnRoute, setUserOwnRoute] = useState();
     const [invalidAddress, setInvalidAddress] = useState();
     const router = useRouter();
     const pathArray = router.asPath.split('/');
     const walletAddress = pathArray[2];
-
+    const contractToRead = ConnectedContractRead();
     console.log(pathArray);
     console.log(walletAddress);
+  
 
 
     useEffect(() => {
@@ -58,6 +59,7 @@ export default function Profile() {
 
 
     async function withdrawFunds () {
+ 
       const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
       const { ethereum } = window;
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -67,7 +69,6 @@ export default function Profile() {
         fantomABI,
         signer
       )
-
       const withdrawl = await connectedContract.withDrawSeller();
       withdrawl.wait();
       console.log('withdraw finished');
