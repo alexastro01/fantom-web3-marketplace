@@ -2,9 +2,12 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { ethers } from 'ethers'
 import Link from 'next/link'
+
 const LandingPageNftEvent = (props) => {
 
-
+useEffect(() => {
+console.log(ethers.utils.parseEther(props.amount) )
+},[])
 
   return (
 <div className='grid grid-cols-1 text-center justify-items-center border-2 rounded-lg border-gray-200 mx-12 space-y-2 my-2 py-4'>
@@ -16,7 +19,14 @@ const LandingPageNftEvent = (props) => {
   </div>
   
   <p>{props.description && props.description.slice(0, 40)}...</p>
-  <p className='text-blue-500 font-semibold'>{props.amount.startsWith('0.') ? props.amount : ethers.utils.formatEther(props.amount)} FTM</p>
+  
+ 
+   
+    {props.isSold === true ?  <p className='text-blue-500 font-semibold'>{ethers.utils.formatEther(props.amount)} FTM</p> : 
+    <p className='text-blue-500 font-semibold'>{props.amount} FTM</p>
+    } 
+
+
   <p className='font-bold'>Token id - {props.id}</p>
   <Link href={`profile/${props.address}`}>
   <button className='bg-gray-800 text-white font-bold  w-48 rounded-lg  h-10 hover:scale-105 transition-transform ' onClick={null}>{props.isSold ? 'Buyer ' : 'Seller ' }{props.address.slice(0,7)}</button>
