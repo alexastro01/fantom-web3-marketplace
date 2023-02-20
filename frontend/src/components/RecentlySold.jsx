@@ -7,6 +7,7 @@ import fantomABI from '../helper/Marketplace.json'
 import LandingPageNftEvent from './LandingPageNftEvent';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import LoadingComponent from './LoadingComponent';
 
 const RecentlySold = () => {
 
@@ -129,7 +130,7 @@ const RecentlySold = () => {
       <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.amount} id={card.id} address={card.buyer} isSold={true} />
      ))}
   </Carousel>
-   : <div>Loading</div>
+   : <LoadingComponent />
 }
    
 </div>

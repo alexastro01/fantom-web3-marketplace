@@ -8,6 +8,7 @@ import { ethers } from "ethers";
 import fantomABI from '../../helper/Marketplace.json'
 import NftCard from './NftCard';
 import { FaCircle } from 'react-icons/fa';
+import LoadingComponent from '../LoadingComponent';
 
 
 const BoughtByUserCard = (props) => {
@@ -106,9 +107,9 @@ let arrOfTokenIds = [];
       return (
     <div>  
       <div className='grid grid-cols-4'>
-      {mounted ? 
+      {mounted && stateOfArr ? 
         metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} ownerOfRoute={props.booleanOwnerOfRoute} id={card.id} routeWallet={props.routeWallet}  addressOfUser={props.addressOfUser} metadataArr={metadataArr} stateOfPage={props.stateOfPage}/></div>)) :
-      <div> <FaCircle /></div>}
+      <div> <LoadingComponent /></div>}
 
       </div>
 

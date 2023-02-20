@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import fantomABI from '../helper/Marketplace.json'
 import LandingPageNftEvent from './LandingPageNftEvent';
 import Carousel from 'react-multi-carousel';
+import LoadingComponent from './LoadingComponent';
 import 'react-multi-carousel/lib/styles.css';
 
 const RecentlyCreated = () => {
@@ -131,7 +132,8 @@ const RecentlyCreated = () => {
       <LandingPageNftEvent image={card.image} title={card.title} description={card.description} amount={card.price} id={card.id} address={card.seller} />
      ))}
   </Carousel>
-   : <div>Loading</div>
+   : <LoadingComponent />
+
 }
    
 </div>
