@@ -7,6 +7,8 @@ import spinner from '../../images/spinner.gif'
 import { useRouter } from 'next/router';
 import { useIsMounted } from '@/hooks/useIsMounted';
 import Link from 'next/link';
+import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
+
 const NftCard = (props) => {
 
    const[loadingState, setLoadingState] = useState();
@@ -27,6 +29,8 @@ const NftCard = (props) => {
     2: 'Shipping in Progress',
     3: 'Shipped'
    }
+
+   const contractToRead = ConnectedContractRead();
 
 
   async function updateOrderStatus() {
@@ -63,36 +67,20 @@ const NftCard = (props) => {
   }
 
    async function getShippingStatus () {
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-        const { ethereum } = window;
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          fantomABI,
-          provider
-        )
 
-    const shippingStatus = await connectedContract.getShipmentStatusForId(props.id);
+
+    const shippingStatus = await contractToRead.getShipmentStatusForId(props.id);
     console.log(shippingStatus)
     setShippingStatusState(shippingStatus)
   
    }
 
    async function forIdGetSeller() {
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-        const { ethereum } = window;
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          fantomABI,
-          provider
-        )
+ 
 
     console.log(props.id)
 
-    const sellerId = await connectedContract.forIdGetSellerAndPrice(props.id);
+    const sellerId = await contractToRead.forIdGetSellerAndPrice(props.id);
   
     setSellerOfId(sellerId[0])
 
@@ -127,34 +115,18 @@ const NftCard = (props) => {
 
 
   async function getBuyerOfId() {
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      provider
-    )
+ 
     console.log(props.id + "this is props.id")
-    const buyerOfId = await connectedContract.buyerOfId(props.id);
+    const buyerOfId = await contractToRead.buyerOfId(props.id);
     console.log(buyerOfId + "this is buyerOfId")
     setBuyerOfIdState(buyerOfId)
   }
 
 
   async function verifyOwnerShip() {
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-        const { ethereum } = window;
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          fantomABI,
-          provider
-        )
+  
     
-    const ownerOfId = await connectedContract.ownerOf(props.id);
+    const ownerOfId = await contractToRead.ownerOf(props.id);
     console.log(ownerOfId)
     setOwnerOfIdState(ownerOfId)
     if(ownerOfId == props.routeWallet) {
@@ -170,17 +142,9 @@ const NftCard = (props) => {
   }
 
   async function checkIfItemwasBought () {
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      provider
-    )
+
     
-    const soldStatus = await connectedContract.SoldStatus(props.id);
+    const soldStatus = await contractToRead.SoldStatus(props.id);
     console.log(soldStatus + " " +"soldstatus")
     if(soldStatus == true) {
       setSoldStatusState(true)

@@ -9,7 +9,7 @@ import fantomABI from '../../helper/Marketplace.json'
 import NftCard from './NftCard';
 import { FaCircle } from 'react-icons/fa';
 import LoadingComponent from '../LoadingComponent';
-
+import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 
 const CreatedByUserCard = (props) => {
 
@@ -21,19 +21,13 @@ const CreatedByUserCard = (props) => {
     
 let arrOfTokenIds = [];
 
+const contractToRead = ConnectedContractRead();
+
 
     const getTokenIds = async () => {
       
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
-      const tokenIDs = await connectedContract.getItemIdsCreatedByUser(props.routeWallet);
+  
+      const tokenIDs = await contractToRead.getItemIdsCreatedByUser(props.routeWallet);
       for(let i =0; i <tokenIDs.length; i ++) {
       const hex = tokenIDs[i]._hex
      
@@ -54,21 +48,12 @@ const mounted = useIsMounted();
 
   const getMetadataFromIpfs = async () => {
 
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-        const { ethereum } = window;
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          fantomABI,
-          provider
-        )
 
     for(let i = 0; i < arrOfTokenIds.length; i++){
      const numberOfId = arrOfTokenIds[i];
      console.log(numberOfId)
       console.log('starting')
-     const tokenUri = await connectedContract.tokenURI(parseInt(numberOfId));
+     const tokenUri = await contractToRead.tokenURI(parseInt(numberOfId));
 
      console.log(tokenUri)
     try{

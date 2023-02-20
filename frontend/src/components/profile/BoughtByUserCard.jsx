@@ -9,6 +9,7 @@ import fantomABI from '../../helper/Marketplace.json'
 import NftCard from './NftCard';
 import { FaCircle } from 'react-icons/fa';
 import LoadingComponent from '../LoadingComponent';
+import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 
 
 const BoughtByUserCard = (props) => {
@@ -16,6 +17,7 @@ const BoughtByUserCard = (props) => {
 
      const [metadataArr, setMetadataArr] = useState([]);
      const [stateOfArr, setStateOfArr] = useState();
+     const contractToRead = ConnectedContractRead();
       
     
 let arrOfTokenIds = [];
@@ -23,16 +25,7 @@ let arrOfTokenIds = [];
 
     const getTokenIds = async () => {
       
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
-      const tokenIDs = await connectedContract.getItemIdsBoughtByUser(props.routeWallet);
+      const tokenIDs = await contractToRead.getItemIdsBoughtByUser(props.routeWallet);
       for(let i =0; i <tokenIDs.length; i ++) {
       const hex = tokenIDs[i]._hex
       const hexNumber = hex;
@@ -50,15 +43,7 @@ let arrOfTokenIds = [];
 
   const getMetadataFromIpfs = async () => {
 
-    const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-    const { ethereum } = window;
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-    const signer = provider.getSigner();
-    const connectedContract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      fantomABI,
-      provider
-    )
+ 
 
 
     for(let i = 0; i < arrOfTokenIds.length; i++){
@@ -66,7 +51,7 @@ let arrOfTokenIds = [];
      const numberOfId = arrOfTokenIds[i];
      console.log(numberOfId)
       console.log('starting')
-     const tokenUri = await connectedContract.tokenURI(parseInt(numberOfId));
+     const tokenUri = await contractToRead.tokenURI(parseInt(numberOfId));
 
      console.log(tokenUri)
     try{

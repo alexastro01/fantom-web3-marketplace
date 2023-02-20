@@ -8,6 +8,7 @@ import LandingPageNftEvent from './LandingPageNftEvent';
 import Carousel from 'react-multi-carousel';
 import LoadingComponent from './LoadingComponent';
 import 'react-multi-carousel/lib/styles.css';
+import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 
 const RecentlyCreated = () => {
 
@@ -34,6 +35,8 @@ const RecentlyCreated = () => {
       items: 1
     }
   };
+
+  const contractToRead = ConnectedContractRead();
 
 
     async function callForRecentlySold(){
@@ -66,15 +69,7 @@ const RecentlyCreated = () => {
 
 
       async function getMetadata() {
-        const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-        const { ethereum } = window;
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          fantomABI,
-          provider
-        )
+  
         await callForRecentlySold();
        
         for (let i = 0; i < dataForDisplay.length; i++){
@@ -83,7 +78,7 @@ const RecentlyCreated = () => {
 
             const numberOfId = dataForDisplay[i].data._id;
       
-            const tokenUri = await connectedContract.tokenURI(numberOfId);
+            const tokenUri = await contractToRead.tokenURI(numberOfId);
        
             console.log(tokenUri)
            try{

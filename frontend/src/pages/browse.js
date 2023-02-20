@@ -10,6 +10,7 @@ import NftCard from '@/components/profile/NftCard';
 import { useContext } from 'react';
 import { userAddressContext } from '@/helper/userAddressContext';
 import LoadingComponent from '@/components/LoadingComponent'
+import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 const Browse = () => {
 
 
@@ -17,7 +18,7 @@ const Browse = () => {
   const [metadataArr, setMetadataArr] = useState([]);
   const [stateOfArr, setStateOfArr] = useState();
   const {userAddress, setUserAddress} = useContext(userAddressContext)
-   
+  const contractToRead = ConnectedContractRead();
  
 let arrOfTokenIds = [];
 
@@ -25,16 +26,8 @@ const mounted = useIsMounted();
 
  const getTokenIds = async () => {
    
-  const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-  const { ethereum } = window;
-  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-  const signer = provider.getSigner();
-  const connectedContract = new ethers.Contract(
-    CONTRACT_ADDRESS,
-    fantomABI,
-    provider
-  )
-   const currentId = await connectedContract.currentId();
+
+   const currentId = await contractToRead.currentId();
    console.log(parseInt(currentId._hex))
    const intCurrentId =parseInt(currentId._hex)
    for(let i = 1; i <= intCurrentId; i ++) {
@@ -51,22 +44,14 @@ const mounted = useIsMounted();
 
 const getMetadataFromIpfs = async () => {
 
-  const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-  const { ethereum } = window;
-  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-  const signer = provider.getSigner();
-  const connectedContract = new ethers.Contract(
-    CONTRACT_ADDRESS,
-    fantomABI,
-    provider
-  )
+
 
 
  for(let i = 0; i < arrOfTokenIds.length; i++){
    const numberOfId = arrOfTokenIds[i];
      console.log(numberOfId)
       console.log('starting')
-     const tokenUri = await connectedContract.tokenURI(parseInt(numberOfId));
+     const tokenUri = await contractToRead.tokenURI(parseInt(numberOfId));
 
  try{
    const config = { headers: {

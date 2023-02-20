@@ -11,6 +11,7 @@ import CreatedByUserCard from '@/components/profile/CreatedByUserCard';
 import fantomABI from '../../helper/Marketplace.json'
 import withRouter from 'next/router';
 import BoughtByUserCard from '@/components/profile/BoughtByUserCard';
+import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 
 
 
@@ -24,7 +25,7 @@ export default function Profile() {
     const [stateOfPage, setStateOfPage] = useState(1)
     const mounted = useIsMounted(); 
     const { address } = useAccount();
-
+    const contractToRead = ConnectedContractRead();
     const [userOwnRoute, setUserOwnRoute] = useState();
     const [invalidAddress, setInvalidAddress] = useState();
     const router = useRouter();
@@ -75,18 +76,10 @@ export default function Profile() {
 
 
     async function getBalanceOfUser () {
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
+
   
       
-       const balanceOfUser = await connectedContract.balanceUser(walletAddress);
+       const balanceOfUser = await contractToRead.balanceUser(walletAddress);
        console.log(balanceOfUser + " " +"this is balance")
        const balancetostring = balanceOfUser.toString()
        const balanceInNumber = ethers.utils.formatEther(balancetostring);

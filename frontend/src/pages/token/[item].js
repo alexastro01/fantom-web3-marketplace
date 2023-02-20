@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import TokenInfoComponent from "@/components/TokenInfoComponent";
 import LoadingComponent from "@/components/LoadingComponent";
+import { ConnectedContractRead } from "@/hooks/ConnectedContractRead";
 
 export default function Item() { 
   
@@ -31,21 +32,14 @@ export default function Item() {
     const router = useRouter();
     const pathArray = router.asPath.split('/');
     const tokenIdRoute = pathArray[2];
-
+    
+    const contractToRead = ConnectedContractRead();
 
 
     const forIdGetSeller = async () => {
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
+  
       if(tokenIdRoute >= 0) {
-      const sellerandId = await connectedContract.forIdGetSellerAndPrice(tokenIdRoute);
+      const sellerandId = await contractToRead.forIdGetSellerAndPrice(tokenIdRoute);
       console.log(sellerandId)
       const seller = sellerandId[0];
       setSellerState(seller)
@@ -64,17 +58,9 @@ export default function Item() {
 
 
     const getOwnerOfId = async () => {
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
+   
       if(tokenIdRoute >= 0) {
-      const ownerOf = await connectedContract.ownerOf(tokenIdRoute);
+      const ownerOf = await contractToRead.ownerOf(tokenIdRoute);
       console.log(ownerOf)
       setOwnerOfState(ownerOf)
       }
@@ -82,17 +68,9 @@ export default function Item() {
 
     const MetadataCall = async () => {
       
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
+   
         if(tokenIdRoute >= 0) {
-        const tokenURI = await connectedContract.tokenURI(tokenIdRoute);
+        const tokenURI = await contractToRead.tokenURI(tokenIdRoute);
         console.log(tokenURI)
         setMetadataLinkState(tokenURI)
         await getMetadataFromIpfs();
@@ -122,17 +100,9 @@ export default function Item() {
 
 
     const getSoldStatus = async () => {
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
+    
       if(tokenIdRoute >= 0) {
-      const soldStatus = await connectedContract.SoldStatus(tokenIdRoute);
+      const soldStatus = await contractToRead.SoldStatus(tokenIdRoute);
       console.log(soldStatus)
       setSoldStatusState(soldStatus)
       }
@@ -140,17 +110,9 @@ export default function Item() {
 
 
     const getBuyerOfId = async () => {
-      const CONTRACT_ADDRESS = "0x162A384D5183c6e8A48d5fE0F84109E2d0079A73";
-      const { ethereum } = window;
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/fantom/');
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        fantomABI,
-        provider
-      )
+ 
       if(tokenIdRoute >= 0) {
-      const buyerOfId = await connectedContract.buyerOfId(tokenIdRoute);
+      const buyerOfId = await contractToRead.buyerOfId(tokenIdRoute);
       console.log(buyerOfId)
       setBuyerOfIdState(buyerOfId)
       }
@@ -256,7 +218,7 @@ export default function Item() {
      {arrayState[0].title}
     </p>
     <Image src={arrayState[1].image} width={500} height={500} />
-    <p className="text-4xl text-left max-w-[500px] ">
+    <p className="text-3xl text-left max-w-[500px] ">
     {arrayState[2].description} 
     </p>
     <p className="text-md text-left">
