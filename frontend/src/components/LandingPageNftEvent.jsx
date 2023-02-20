@@ -7,7 +7,7 @@ const LandingPageNftEvent = (props) => {
 
 
   return (
-<div className='grid grid-cols-1 text-center justify-items-center border-2 rounded-lg border-gray-200 mx-12 space-y-2 '>
+<div className='grid grid-cols-1 text-center justify-items-center border-2 rounded-lg border-gray-200 mx-12 space-y-2 my-2 py-4'>
 <p className='text-xl font-bold'>{props.title}</p>
   <div className="flex items-center justify-center w-[300px] h-[300px]">
     <Link href={`token/${props.id}`}>
@@ -15,7 +15,7 @@ const LandingPageNftEvent = (props) => {
     </Link>
   </div>
   
-  <p>{props.description}</p>
+  <p>{props.description && props.description.slice(0, 40)}...</p>
   <p className='text-blue-500 font-semibold'>{props.amount.startsWith('0.') ? props.amount : ethers.utils.formatEther(props.amount)} FTM</p>
   <p className='font-bold'>Token id - {props.id}</p>
   <Link href={`profile/${props.address}`}>

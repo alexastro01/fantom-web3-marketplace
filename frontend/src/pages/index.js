@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import RecentlyCreated from '@/components/RecentlyCreated'
 import RecentlySold from '@/components/RecentlySold'
 
+
 export default function Home() {
   return (
     <>
@@ -17,6 +18,7 @@ export default function Home() {
       <Navbar />
       <Header />
       <div className='space-y-20'>
+  
       <RecentlyCreated />
       <RecentlySold />
       </div>
