@@ -58,4 +58,9 @@ to do :
  > bought item section 
 -Loading state main page 
 -Loading state browse page
+-style upload button on create page
 -main page design 
+-on item description card, if description is longer than 50 characters, slice it and put '...'
+-min width on card on main page also to fit 2 lines of description
+-more spacing on cards on main page
+-on bought item card on profile page, have under description : 'sold by [0xaddress]'

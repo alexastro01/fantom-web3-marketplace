@@ -49,7 +49,7 @@ const RecentlyCreated = () => {
         const data ={"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"_id","type":"uint256"},{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"uint256","name":"price","type":"uint256"}],"name":"ItemCreated","type":"event"};
        try{ 
        const response = await axios.post(
-          'https://deep-index.moralis.io/api/v2/0x162A384D5183c6e8A48d5fE0F84109E2d0079A73/events?chain=fantom&from_block=55587828&topic=0x9b8c4b5bf2f39369bee0a581bf2e28b1c1df1982925a012ff839ee598d142cdd',
+          'https://deep-index.moralis.io/api/v2/0x84EDAf725e649D0034348f345eBAA05624566861/events?chain=fantom&from_block=55587828&topic=0x9b8c4b5bf2f39369bee0a581bf2e28b1c1df1982925a012ff839ee598d142cdd',
           data,
           { headers }
         )

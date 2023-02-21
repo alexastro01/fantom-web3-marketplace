@@ -50,7 +50,7 @@ const RecentlySold = () => {
         const data ={"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"_id","type":"uint256"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ItemSold","type":"event"};
        try{ 
        const response = await axios.post(
-          'https://deep-index.moralis.io/api/v2/0x162A384D5183c6e8A48d5fE0F84109E2d0079A73/events?chain=fantom&from_block=55587828&topic=0xa574c741071bb18f51fa88c17aeefec514bebf670ca22a3736fba6504ecbb763',
+          'https://deep-index.moralis.io/api/v2/0x84EDAf725e649D0034348f345eBAA05624566861/events?chain=fantom&from_block=55587828&topic=0xa574c741071bb18f51fa88c17aeefec514bebf670ca22a3736fba6504ecbb763',
           data,
           { headers }
         )
@@ -74,7 +74,7 @@ const RecentlySold = () => {
        
         for (let i = 0; i < dataForDisplay.length; i++){
             
-        
+           console.log(dataForDisplay)
 
             const numberOfId = dataForDisplay[i].data._id;
       

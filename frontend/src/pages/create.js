@@ -136,7 +136,7 @@ const Create = () => {
              <form onSubmit={sendImageToIPFS} className="grid grid-cols-1 justify-items-center w-full">
               <label className='w-80 h-40  rounded-2xl shadow-2xl  md:text-white bg-blue-600 px-4 py-1 dark:text-white text-xl hover:scale-105 transition-transform' >
                 <div className=''>
-                {fileImg ?  <p className='flex justify-center mt-8 text-4xl'>{fileImg.name}</p> : 
+                {fileImg ?  <p className='flex justify-center mt-8 text-4xl'>{fileImg.name.slice(0,12)}...</p> : 
                 <div className='grid items-center justify-items-center mt-8 cursor-pointer '>
                 <p className=''>Upload an image</p> 
                 <FaCloudUploadAlt size={80} className="flex justify-center" /> 
@@ -158,7 +158,7 @@ const Create = () => {
             <p className='text-7xl mt-12'>Sell an item</p>
             <p className='text-5xl mt-8'>Step 2 : Chose title description and price</p>
             <div className='grid grid-cols-2 justify-items-center items-center mt-8'> 
-              { imageHash && <Image src={imageHash} width={500} height={500} alt="item to create" className='rounded-lg'/> } 
+              { imageHash && <Image src={imageHash} width={500} height={500} alt="item to create" className='rounded-lg' priority={true}/> } 
               <form onSubmit={handleSubmit} className="flex-col"  >
    
         <input
