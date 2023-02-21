@@ -236,7 +236,7 @@ export default function Item() {
 </div>
 
 
-</div> : <div><LoadingComponent /></div>} 
+</div> : <div className="flex justify-center py-72 "><LoadingComponent /></div>} 
   
         </div>
      )

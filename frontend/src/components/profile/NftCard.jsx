@@ -198,7 +198,7 @@ const mounted = useIsMounted();
           </button>
        }
      </div>
-     <div className='flex justify-center'>
+     <div className='grid grid-cols-1'>
       {
      loadingState  ?
      <a href={`https://ftmscan.com/tx/${txnHash}`} className='w-full ' target="_blank" >
@@ -214,7 +214,7 @@ const mounted = useIsMounted();
      :
      soldStatusState && !props.isBrowsingPage ?
      <Link href={`../profile/${buyerOfIdState}`} target="_blank">
-     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState  : 'Sold to ' + " " + props.routeWallet }</button>
+     <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >{props.stateOfPage === 1 ? 'Sold to ' + " " + buyerOfIdState  : 'Bought by ' + " " + props.routeWallet.slice(0,12) }</button>
      </Link>
      :
      soldStatusState && props.isBrowsingPage ?
@@ -244,6 +244,11 @@ const mounted = useIsMounted();
      
    
      
+    }
+    {props.stateOfPage === 2 && 
+    <Link href={`../profile/${sellerofId}`} target="_blank">
+    <button className='bg-gray-800 text-white font-bold w-full rounded-lg mt-2 h-12 hover:scale-105 transition-transform ' >Seller: {sellerofId && sellerofId.slice(0,10)}</button>
+    </Link>
     }
 
 
