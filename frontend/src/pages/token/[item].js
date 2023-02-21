@@ -215,7 +215,7 @@ export default function Item() {
      {ownerOfState == userAddress ? <span className="text-blue-600"> You</span> :<span className="text-blue-500 font-semibold"> {ownerOfState} </span>}
      </p>
      </Link>
-    <p className="text-4xl">
+    <p className="text-4xl my-2">
      {arrayState[0].title}
     </p>
     <Image src={arrayState[1].image} width={500} height={500} />
