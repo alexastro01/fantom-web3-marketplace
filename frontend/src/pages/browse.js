@@ -87,7 +87,7 @@ useEffect(() => {
   return (
     <div>
     <Navbar />
-    <div className='grid grid-cols-4 mx-12'>
+    <div className='grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mx-12'>
     {stateOfArr ? 
     
         metadataArr.map(card => (<div><NftCard title={card.title} description={card.description} image={card.image} price={card.price} id={card.id}  metadataArr={metadataArr} isBrowsingPage={true} addressOfUser={userAddress}/></div>)) :

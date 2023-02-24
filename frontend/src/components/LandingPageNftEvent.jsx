@@ -10,11 +10,11 @@ console.log(ethers.utils.parseEther(props.amount) )
 },[])
 
   return (
-<div className='grid grid-cols-1 text-center justify-items-center border-2 rounded-lg border-gray-200 mx-12 space-y-2 my-2 py-4'>
+<div className='grid grid-cols-1 text-center justify-items-center border-2 rounded-lg border-gray-200 lg:mx-12 lg:space-y-2 lg:my-2 lg:py-4'>
 <p className='text-xl font-bold'>{props.title}</p>
   <div className="flex items-center justify-center w-[300px] h-[300px]">
     <Link href={`token/${props.id}`}>
-    <Image src={props.image} width={300} height={300} className="object-contain rounded-2xl hover:scale-105 transition-transform" />
+    <Image src={props.image} width={300} height={300} className="object-contain rounded-2xl hover:scale-105 transition-transform p-12 lg:p-0" />
     </Link>
   </div>
   

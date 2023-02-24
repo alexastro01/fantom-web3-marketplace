@@ -117,7 +117,7 @@ const RecentlyCreated = () => {
 
   return (
 
-<div className='mx-48 my-12'>
+<div className='mx-12 xl:mx-24 2xl:mx-48 my-12'>
   <h1 className='font-light text-4xl mb-8'>Recently Created</h1>
   {
     finishedDataProcessing > 0 ?

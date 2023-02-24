@@ -40,7 +40,8 @@ const Navbar = () => {
     }}>
   <div class="container flex flex-wrap items-center justify-between mx-auto">
     <Link href="/" class="flex items-center">
-        <h1 className='font-bold text-blue-600 text-3xl'>Fantom Marketplace</h1>
+        <h1 className='font-bold text-blue-600 hidden lg:block text-3xl'>Fantom Marketplace</h1>
+        <h1 className='font-bold text-blue-600 block lg:hidden text-xl'>FTM MK</h1>
         
     </Link>
     
