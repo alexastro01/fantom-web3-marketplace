@@ -38,29 +38,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 
-
-recently created and recently sold 4-6  max each 
-how it works on main page
-browse with all the items available for sale 
-->for every component in browse , buy now button attached to component where price is got from fantomscan/metadata :)
-after create item is successful , view it in profile
-while creating , if image is not there yet , loading or force display
-/profile route
-display item bought with data :
--order status
--image description price
--seller
--buyer
-
-to do :
--Loading state handling when loading profile page 
- > listed item section
- > bought item section 
--Loading state main page 
--Loading state browse page
--style upload button on create page
--main page design 
--on item description card, if description is longer than 50 characters, slice it and put '...'
--min width on card on main page also to fit 2 lines of description
--more spacing on cards on main page
--on bought item card on profile page, have under description : 'sold by [0xaddress]'
