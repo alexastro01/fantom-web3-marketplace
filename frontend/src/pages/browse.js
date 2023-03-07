@@ -58,8 +58,8 @@ const getMetadataFromIpfs = async () => {
        
          Accept: "text/plain",
      }}
-    
- const metadata = await axios.get(tokenUri, config);
+     let newGatewayUrl = tokenUri.replace('https://gateway.pinata.cloud/ipfs', 'https://ipfs.io/ipfs')     
+ const metadata = await axios.get(newGatewayUrl, config);
  metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: arrOfTokenIds[i]})
 
  console.log(metadataArr);

@@ -74,7 +74,8 @@ export default function Item() {
         if(tokenIdRoute >= 0) {
         const tokenURI = await contractToRead.tokenURI(tokenIdRoute);
         console.log(tokenURI)
-        setMetadataLinkState(tokenURI)
+        let newGatewayUrl = tokenURI.replace('https://gateway.pinata.cloud/ipfs', 'https://ipfs.io/ipfs')    
+        setMetadataLinkState(newGatewayUrl)
         await getMetadataFromIpfs();
         }
     }
@@ -87,6 +88,7 @@ export default function Item() {
                 Accept: "text/plain",
             }}
             console.log(metadataLinkState)
+
         const metadata = await axios.get(metadataLinkState, config);
         console.log(metadata);
         
