@@ -18,7 +18,7 @@ import { ConnectedContractRead } from '@/hooks/ConnectedContractRead';
 export default function Profile() {
 
     const {userAddress, setUserAddress} = useContext(userAddressContext);
-    const [userAddressState, setUserAddressState] = useState('');
+    const [userAddressState, setUserAddressState] = useState('0x000000000000000000000000000000000000dEaD');
     const [routeStateAddress, setRouteStateAddress] = useState();
     const [balanceState, setBalanceState] = useState();
     // 1 = listed items; 2 = bought items
@@ -38,11 +38,13 @@ export default function Profile() {
 
 
     useEffect(() => {
-      
+        if(address){
         setUserAddressState(address);
-        if (address.toLowerCase()  === walletAddress.toLowerCase()) {
+        }
+      
+        if (userAddressState.toLowerCase()  === walletAddress.toLowerCase()) {
             setUserOwnRoute(true);
-          } else if (address.toLowerCase() !== walletAddress.toLowerCase()) {
+          } else if (userAddressState.toLowerCase() !== walletAddress.toLowerCase()) {
             setUserOwnRoute(false);
           }
           if (ethers.utils.isAddress(walletAddress) === false) {
