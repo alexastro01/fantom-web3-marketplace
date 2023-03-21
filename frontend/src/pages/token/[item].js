@@ -74,7 +74,7 @@ export default function Item() {
         if(tokenIdRoute >= 0) {
         const tokenURI = await contractToRead.tokenURI(tokenIdRoute);
         console.log(tokenURI)
-        let newGatewayUrl = tokenURI.replace('https://gateway.pinata.cloud/ipfs', 'https://ipfs.io/ipfs')    
+        let newGatewayUrl = tokenURI.replace('https://gateway.pinata.cloud/ipfs', 'https://gateway.pinata.cloud/ipfs')    
         setMetadataLinkState(newGatewayUrl)
         await getMetadataFromIpfs();
         }

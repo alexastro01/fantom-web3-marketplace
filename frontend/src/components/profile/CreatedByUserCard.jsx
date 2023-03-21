@@ -61,7 +61,7 @@ const mounted = useIsMounted();
           
             Accept: "text/plain",
         }}
-        let newGatewayUrl = tokenUri.replace('https://gateway.pinata.cloud/ipfs', 'https://ipfs.io/ipfs')   
+        let newGatewayUrl = tokenUri.replace('https://gateway.pinata.cloud/ipfs', 'https://gateway.pinata.cloud/ipfs')   
     const metadata = await axios.get(newGatewayUrl, config);
 
     

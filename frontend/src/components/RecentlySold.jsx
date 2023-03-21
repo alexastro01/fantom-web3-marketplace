@@ -87,7 +87,7 @@ const RecentlySold = () => {
                    Accept: "text/plain",
                }}
            
-          let newGatewayUrl = tokenUri.replace('https://gateway.pinata.cloud/ipfs', 'https://ipfs.io/ipfs')
+          let newGatewayUrl = tokenUri.replace('https://gateway.pinata.cloud/ipfs', 'https://gateway.pinata.cloud/ipfs')
            const metadata = await axios.get(newGatewayUrl, config);
            console.log(metadata.data);
            metadataArr[i] = Object.assign(metadata.data[0], metadata.data[1], metadata.data[2], metadata.data[3], {id: parseInt(dataForDisplay[i].data._id)}, {buyer: dataForDisplay[i].data.buyer}, {amount: dataForDisplay[i].data.amount} )
